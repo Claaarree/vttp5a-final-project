@@ -1,0 +1,48 @@
+<p>new-post works!</p>
+
+<p-card header="New Post">
+    @if (dataUri.length) {
+        <div class="flex">
+            <p-galleria [value]="images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [containerStyle]="{ 'max-width': '640px' }">
+                <ng-template #item let-item>
+                    <img [src]="item.src" style="width: 50%; display: block;" />
+                </ng-template>
+            </p-galleria>
+        </div>
+    } 
+    @else {
+        <!-- upload pictures -->
+        <div class="card flex justify-center">
+            <p-button (onClick)="selectFiles()">
+                Upload pictures
+                <input id="fileInput" type="file" multiple (change)="onFileChange($event)" accept="image/png, image/jpeg">
+            </p-button>
+        </div>
+    }
+    <!-- google autocomplete places -->
+    <div class="field">
+        <app-autocomplete></app-autocomplete>
+    </div>
+    <form [formGroup]="form">
+        <!-- area select -->
+        <div class="field">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select inputId="on_label" [options]="areas" optionLabel="name" styleClass="w-full" />
+                <label for="on_label">Area</label>
+            </p-floatlabel>
+        </div>
+        <!-- rating -->
+        <div class="field">
+            <label for="rating">Rating</label>
+            <p-rating id="rating" formControlName="rating" />
+        </div>
+        <!-- review text area -->
+        <div class="field">
+            <p-floatlabel variant="on">
+                <textarea pTextarea id="over_label" rows="5" cols="45" style="resize: none" class="h-full" formControlName="review"></textarea>
+                <label for="on_label">Your thoughts...</label>
+            </p-floatlabel>
+        </div>
+        <p-button (click)="upload()">Post</p-button>
+    </form>
+</p-card>

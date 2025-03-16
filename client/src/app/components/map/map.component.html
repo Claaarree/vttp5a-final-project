@@ -1,0 +1,17 @@
+<p>map works!</p>
+
+<div class="map-container">
+    <google-map [options]="options" [center]="center">
+        @for (marker of markers; let idx = $index; track idx) {
+            <map-advanced-marker 
+                #pin="mapAdvancedMarker" 
+                [position]="marker" 
+                (mapClick)="openInfoWindow(pin, idx)">
+            </map-advanced-marker>
+            <map-info-window></map-info-window>
+        }
+    </google-map>
+    <button (click)="getLocation()">Geolocate</button>
+</div>
+
+ 
