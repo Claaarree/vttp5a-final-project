@@ -6,6 +6,7 @@ export interface User {
 export interface Post {
     rating: string
     review: string
+    placeId: string
 }
 
 export interface UploadResult {
@@ -14,6 +15,15 @@ export interface UploadResult {
 
 export interface Image {
     src: string
+}
+
+export interface Place {
+    placeId: string
+    name: string
+    formattedAddress: string
+    lat: number
+    lng: number
+    area: string
 }
 
 

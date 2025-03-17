@@ -3,7 +3,10 @@
 <p-card header="New Post">
     @if (dataUri.length) {
         <div class="flex">
-            <p-galleria [value]="images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [containerStyle]="{ 'max-width': '640px' }">
+            <p-galleria [value]="images" [numVisible]="5" 
+                        [circular]="true" [showItemNavigators]="true" 
+                        [showThumbnails]="false" [showIndicators]="true" 
+                        [containerStyle]="{ 'max-width': '640px' }">
                 <ng-template #item let-item>
                     <img [src]="item.src" style="width: 50%; display: block;" />
                 </ng-template>
@@ -21,13 +24,13 @@
     }
     <!-- google autocomplete places -->
     <div class="field">
-        <app-autocomplete></app-autocomplete>
+        <app-autocomplete (placeSelected)="getPlaceDetails($event)"></app-autocomplete>
     </div>
     <form [formGroup]="form">
         <!-- area select -->
         <div class="field">
             <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select inputId="on_label" [options]="areas" optionLabel="name" styleClass="w-full" />
+                <p-select inputId="on_label" [options]="areas" styleClass="w-full" formControlName="area"/>
                 <label for="on_label">Area</label>
             </p-floatlabel>
         </div>
