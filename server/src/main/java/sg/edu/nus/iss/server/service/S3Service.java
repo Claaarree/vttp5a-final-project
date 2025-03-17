@@ -46,7 +46,7 @@ public class S3Service {
             
             PutObjectRequest putObjectRequest = 
                     new PutObjectRequest(bucket, 
-                            "test/" + finalFileName, 
+                            finalFileName, 
                             f.getInputStream(), 
                             objectMetadata);
     
@@ -54,7 +54,7 @@ public class S3Service {
             amazonS3.putObject(putObjectRequest);
     
             String endpointUrl = "https://%s.%s/%s"
-                    .formatted(bucket, endPoint, "test/" + finalFileName);
+                    .formatted(bucket, endPoint, finalFileName);
             
             endpointUrls.add(endpointUrl);
     

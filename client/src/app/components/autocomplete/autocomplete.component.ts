@@ -35,7 +35,7 @@ export class AutocompleteComponent implements OnInit{
       this.selectedPlace = {
         placeId: place.place_id ?? "",
         name: place.name ?? "",
-        formattedAddress: place.formatted_address ?? "", 
+        address: place.formatted_address ?? "", 
         lat: place.geometry.location?.lat() ?? 0,
         lng: place.geometry.location?.lng() ?? 0,
         area: ""

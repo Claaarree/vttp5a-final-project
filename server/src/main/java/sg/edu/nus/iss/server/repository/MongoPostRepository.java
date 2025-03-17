@@ -8,23 +8,23 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import static sg.edu.nus.iss.server.utils.MongoDbConstants.C_POSTS;
+import static sg.edu.nus.iss.server.utils.MongoDbConstants.C_INFORMATION;
 import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_PLACE_ID;
 import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_POST_ID;
 
 import java.util.List;
 
 @Repository
-public class PostRepository {
+public class MongoPostRepository {
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public Document getPostById(String postId) {
-        Criteria criteria = Criteria.where(F_POST_ID)
-                .is(postId);
+    public Document getImagesByPostId(String postId, String uid) {
+        Criteria criteria = Criteria.where("_id")
+                .is("test");
         Query query = Query.query(criteria);
-        Document post = mongoTemplate.findOne(query, Document.class, C_POSTS);
+        Document post = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
 
         return post;
     }
@@ -33,13 +33,17 @@ public class PostRepository {
         Criteria criteria = Criteria.where(F_PLACE_ID)
                 .is(placeId);
         Query query = Query.query(criteria);
-        List<Document> posts = mongoTemplate.find(query, Document.class, C_POSTS);
+        List<Document> posts = mongoTemplate.find(query, Document.class, C_INFORMATION);
 
         return posts;
     }
 
-    public void createPost(Document post) {
-        mongoTemplate.insert(post, C_POSTS);
+    public void newPost(String postId, String uid) {
+        Query query = Query.query(Criteria.where("_id").is(uid));
+        Update updateOps = new Update()
+                .push("post_ids", postId);
+
+        mongoTemplate.upsert(query, updateOps, "information");
     }
 
     // TODO think about how to update....
@@ -51,7 +55,7 @@ public class PostRepository {
 
     public long deletePostById(String postId) {
         Query query = Query.query(Criteria.where(F_POST_ID).is(postId));
-        return mongoTemplate.remove(query, Document.class, C_POSTS).getDeletedCount();
+        return mongoTemplate.remove(query, Document.class, C_INFORMATION).getDeletedCount();
     }
 
 

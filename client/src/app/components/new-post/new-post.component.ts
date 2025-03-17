@@ -49,7 +49,7 @@ export class NewPostComponent implements OnInit{
       // Iterate over the files using forEach
       Array.from(input.files).forEach((file, idx) => {
         // 
-        console.log(`file ${idx}: ` + file);
+        // console.log(`file ${idx}: ` + file);
         // 
         const reader = new FileReader();
         reader.onload = () => {
@@ -61,6 +61,7 @@ export class NewPostComponent implements OnInit{
         reader.readAsDataURL(file);
       });
     }
+    // TODO inplement throw error if more than 3 files uploaded
   }
 
   upload() {
@@ -82,13 +83,13 @@ export class NewPostComponent implements OnInit{
 
     this.post = formValue;
     // 
-    console.log(this.filelist);
+    // console.log(this.filelist);
     // 
-    // this.fileUploadSvc.upload(this.post, this.selectedPlace, this.filelist)
-    //   .then((result) => {
-    //     console.log(result);
-    //     // this.router.navigate(['/image', result.postId])
-    //   })
+    this.fileUploadSvc.upload(this.post, this.selectedPlace, this.filelist)
+      .then((result) => {
+        console.log(result);
+        // this.router.navigate(['/image', result.postId])
+      })
   }
 
   protected getPlaceDetails(place: Place) {

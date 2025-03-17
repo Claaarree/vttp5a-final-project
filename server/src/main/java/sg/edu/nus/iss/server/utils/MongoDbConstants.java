@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.server.utils;
 
 public class MongoDbConstants {
-    public static final String C_POSTS = "posts";
+    public static final String C_INFORMATION = "information";
     public static final String F_POST_ID = "post_id";
     public static final String F_IMAGES = "images";
     public static final String F_RATING = "rating";

@@ -20,7 +20,7 @@ export interface Image {
 export interface Place {
     placeId: string
     name: string
-    formattedAddress: string
+    address: string
     lat: number
     lng: number
     area: string
