@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { MessageService } from 'primeng/api';
 import { MyPreset } from './primeNG/mytheme';
+import { ViewPostComponent } from './components/view-post/view-post.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MyPreset } from './primeNG/mytheme';
     MapComponent,
     LoginComponent,
     NewPostComponent,
-    AutocompleteComponent   
+    AutocompleteComponent,
+    ViewPostComponent   
   ],
   imports: [
     BrowserModule,

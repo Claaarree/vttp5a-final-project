@@ -10,14 +10,22 @@ import sg.edu.nus.iss.server.model.Post;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_POST;
+
+import java.util.Optional;
 @Repository
 public class MySQLPostRepository {
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void getPostById(String postId) {
+    public Optional<SqlRowSet> getPostById(String postId) throws DataAccessException{
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(GET_POST_BY_ID, postId);
+        if (rowSet.next()){
+            return Optional.of(rowSet);
+        } else {
+            return Optional.empty();
+        }
+        
     }
 
     public void createPost(Post p) throws DataAccessException{

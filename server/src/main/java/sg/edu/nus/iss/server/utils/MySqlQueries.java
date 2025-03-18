@@ -17,4 +17,8 @@ public class MySqlQueries {
         insert into places (place_id, name, address, area, lat, lng)
             values(?, ?, ?, ?, ?, ?);
         """;
+
+    public static final String GET_PLACE_BY_PLACE_ID = """
+            select * from places where place_id = ?
+            """;
 }

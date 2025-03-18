@@ -34,10 +34,10 @@ public class PostController {
     @Autowired
     private S3Service s3Service;
 
-    @GetMapping(path = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getPostById(@PathVariable String postId) {
-        Document post = postService.getPostById(postId);
-        return ResponseEntity.ok(post.toJson());
+        JsonObject jObject = postService.getPostById(postId);
+        return ResponseEntity.ok(jObject.toString());
     }
 
     @GetMapping(path = "/posts/{placeId}")

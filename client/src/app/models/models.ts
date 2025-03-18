@@ -9,14 +9,6 @@ export interface Post {
     placeId: string
 }
 
-export interface UploadResult {
-    postId: string
-}
-
-export interface Image {
-    src: string
-}
-
 export interface Place {
     placeId: string
     name: string
@@ -25,5 +17,26 @@ export interface Place {
     lng: number
     area: string
 }
+
+export interface Image {
+    src: string
+}
+
+export interface UploadResult {
+    postId: string
+}
+
+export interface FinalPost {
+    rating: number
+    review: string
+    images: string
+    name: string
+    address: string
+    area: string
+    lat: number
+    lng: number
+}
+
+
 
 

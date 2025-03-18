@@ -10,6 +10,7 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { RatingModule } from 'primeng/rating';
 import { GalleriaModule } from 'primeng/galleria';
+import { MenubarModule } from 'primeng/menubar';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { GalleriaModule } from 'primeng/galleria';
     SelectModule,
     TextareaModule,
     RatingModule,
-    GalleriaModule
+    GalleriaModule,
+    MenubarModule
   ],
   exports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { GalleriaModule } from 'primeng/galleria';
     SelectModule,
     TextareaModule,
     RatingModule,
-    GalleriaModule
+    GalleriaModule,
+    MenubarModule
   ]
 })
 export class PrimeNGModule { }

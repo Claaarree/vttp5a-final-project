@@ -20,8 +20,8 @@ export class FileUploadService {
     })
    
     return lastValueFrom(this.httpClient
-          .post<string>('/api/post/new', formData)
-          // .post<UploadResult>('/api/post/new', formData)
+          // .post<string>('/api/post/new', formData)
+          .post<UploadResult>('/api/post/new', formData)
     );
   }
 }

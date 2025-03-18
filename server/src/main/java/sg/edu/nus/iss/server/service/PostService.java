@@ -2,9 +2,12 @@ package sg.edu.nus.iss.server.service;
 
 import java.io.StringReader;
 import java.util.List;
+import java.util.Optional;
+
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.json.Json;
@@ -33,8 +36,18 @@ public class PostService {
     @Autowired
     private AuthenticatedUserIdProvider authenticatedUserIdProvider;
 
-    public Document getPostById(String postId) {
-        return mongoPostRepository.getImagesByPostId(postId, "test");
+    public JsonObject getPostById(String postId) {
+        Optional<SqlRowSet> opt = sqlPostRepository.getPostById(postId);
+        
+        JsonObject jsonObject = null;
+        if(opt.isEmpty()){
+            jsonObject = Json.createObjectBuilder()
+                .add("error", "unable to retrieve post")
+                .build();
+        } else {
+            jsonObject = rsToJson(opt.get());
+        }
+        return jsonObject;
     }
 
     public JsonArray getPostsByPlaceId(String placeId) {
@@ -56,7 +69,9 @@ public class PostService {
         Post p = Post.jsonToPost(post, postId, endpointUrls);
         Place pl = Place.jsonToPlace(place);
 
-        sqlPlaceRepository.createPlace(pl);
+        if(!sqlPlaceRepository.placeExists(pl.getPlaceId())){
+            sqlPlaceRepository.createPlace(pl);
+        }
         sqlPostRepository.createPost(p);
 
         // TODO change this back!!
@@ -68,5 +83,22 @@ public class PostService {
 
     public long deletePostById(String postId) {
         return mongoPostRepository.deletePostById(postId);
+    }
+
+    public JsonObject rsToJson(SqlRowSet rs) {
+        String imageChain = rs.getString("images").substring(1);
+
+        JsonObject jObject = Json.createObjectBuilder()
+                .add("rating", rs.getInt("rating"))
+                .add("review", rs.getString("review"))
+                .add("images", imageChain)
+                .add("name", rs.getString("name"))
+                .add("address", rs.getString("address"))
+                .add("area", rs.getString("area"))
+                .add("lat", rs.getBigDecimal("lat"))
+                .add("lng", rs.getBigDecimal("lng"))
+                .build();
+
+        return jObject;
     }
 }

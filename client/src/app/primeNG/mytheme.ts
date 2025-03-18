@@ -662,7 +662,7 @@ const MyPreset = definePreset(Aura, {
             colorScheme: {
                 light: {
                     root: {
-                        background: 'rgba(255,255,255,0.8)',
+                        background: 'rgba(255,255,255,0.9)',
                         color: '{surface.700}'
                     },
                     subtitle: {

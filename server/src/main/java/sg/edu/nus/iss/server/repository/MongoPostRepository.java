@@ -24,9 +24,9 @@ public class MongoPostRepository {
         Criteria criteria = Criteria.where("_id")
                 .is("test");
         Query query = Query.query(criteria);
-        Document post = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
+        Document images = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
 
-        return post;
+        return images;
     }
 
     public List<Document> getPostsByPlaceId(String placeId) {

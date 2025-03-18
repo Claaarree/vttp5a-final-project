@@ -2,6 +2,8 @@ import { Component, inject, model, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploadService } from '../../services/file-upload.service';
 import { Image, Place, Post } from '../../models/models';
+import { Router } from '@angular/router';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-new-post',
@@ -14,6 +16,8 @@ export class NewPostComponent implements OnInit{
   
   private fb = inject(FormBuilder);
   private fileUploadSvc = inject(FileUploadService);
+  private router = inject(Router);
+  private postService = inject(PostService);
   form!: FormGroup;
   images: Image[] = [];
   dataUri: string[] = [];
@@ -88,7 +92,11 @@ export class NewPostComponent implements OnInit{
     this.fileUploadSvc.upload(this.post, this.selectedPlace, this.filelist)
       .then((result) => {
         console.log(result);
-        // this.router.navigate(['/image', result.postId])
+        this.postService.getPostById(result.postId)
+          .then(p => {
+            console.log(p);
+          });
+        this.router.navigate(['/viewpost', result.postId])
       })
   }
 

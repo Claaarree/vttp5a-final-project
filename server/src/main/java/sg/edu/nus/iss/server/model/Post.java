@@ -63,7 +63,7 @@ public class Post {
         p.setReview(jsonObject.getString("review"));
         StringBuilder sb = new StringBuilder();
         for(String s : endpointUrls) {
-            sb.append(s + "|");
+            sb.append("|" + s);
         }
         String images = sb.toString();
         p.setImages(images);
