@@ -51,3 +51,4 @@ import { ViewPostComponent } from './components/view-post/view-post.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
