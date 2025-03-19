@@ -1,8 +1,12 @@
 package sg.edu.nus.iss.server.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import sg.edu.nus.iss.server.service.FirebaseMessagingService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @RequestMapping("/api/messaging")
 public class FirebaseMessagingController {
+
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
     
     @PostMapping("/token")
     public ResponseEntity<String> postMethodName(@RequestBody String token) {

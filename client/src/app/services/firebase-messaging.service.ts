@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
+import { getMessaging } from 'firebase/messaging/sw';
 import { getToken, onMessage } from 'firebase/messaging';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';

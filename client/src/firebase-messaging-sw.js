@@ -27,12 +27,14 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // Customize notification here
-    const notificationTitle = 'Background Message Title';
+    const notificationTitle = payload.notification.title;
     const notificationOptions = {
-      body: 'Background Message body.',
-      icon: '/firebase-logo.png'
+      body: payload.notification.body,
+      icon: '/CiakWhere.svg'
     };
   
     self.registration.showNotification(notificationTitle,
       notificationOptions);
 });
+
+// {from: '158349883684', collapseKey: 'campaign_collapse_key_3477300768618769871', messageId: undefined, notification: {…}, data: {…}}collapseKey: "campaign_collapse_key_3477300768618769871"data: {gcm.n.e: '1', google.c.a.ts: '1742354895', google.c.a.udt: '0', google.c.a.e: '1', google.c.a.c_id: '3477300768618769871', …}from: "158349883684"messageId: undefinednotification: {title: 'Test', body: 'This is a test'}[[Prototype]]: Object
