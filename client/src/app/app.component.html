@@ -1,4 +1,7 @@
 <!-- <app-map></app-map> -->
 <!-- <app-login></app-login> -->
 <!-- <app-new-post></app-new-post> -->
+ {{(message$ | async)?.notification?.title }}
+ {{(message$ | async)?.notification?.body }}
+
 <router-outlet></router-outlet>

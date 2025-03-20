@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { getMessaging } from 'firebase/messaging/sw';
-import { getToken, onMessage } from 'firebase/messaging';
+import { getToken, MessagePayload, onMessage, getMessaging } from 'firebase/messaging';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +10,7 @@ export class FirebaseMessagingService {
 
   httpClient = inject(HttpClient);
   messaging = getMessaging();
+  currentMessage = new Subject<MessagePayload>;
 
   getFCMToken() {
     getToken(this.messaging, {
@@ -29,6 +29,7 @@ export class FirebaseMessagingService {
     onMessage(this.messaging, (payload) => {
       console.log('Message received in foreground: ', payload);
       // Display the notification to the user (you might use a service for this)
+      this.currentMessage.next(payload);
     });
   }
 

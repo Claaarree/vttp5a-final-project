@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.json.JsonObject;
+import sg.edu.nus.iss.server.model.NotificationMessage;
 import sg.edu.nus.iss.server.service.FirebaseMessagingService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +23,13 @@ public class FirebaseMessagingController {
     @PostMapping("/token")
     public ResponseEntity<String> postMethodName(@RequestBody String token) {
         System.out.println("FCM token: " + token);
-        return ResponseEntity.ok("in backend");
+        // TODO change this
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setRecipientToken(token);
+        notificationMessage.setTitle("Success");
+        notificationMessage.setBody("Got your token!");
+        JsonObject response = firebaseMessagingService.sendNotificationByToken(notificationMessage);
+        return ResponseEntity.ok(response.toString());
     }
     
 }

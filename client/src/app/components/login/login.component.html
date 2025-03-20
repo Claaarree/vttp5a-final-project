@@ -1,6 +1,28 @@
 <p>login works!</p>
 
-<mat-card class="example-card" appearance="outlined">
+<div class="flex justify-content-center">
+    <p-card header="Login">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <input pInputText id="email" formControlName="email" autocomplete="off" />
+                    <label for="email">Email</label>
+                </p-floatlabel>
+            </div>
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <input pInputText id="password" formControlName="password" autocomplete="off" />
+                    <label for="password">Password</label>
+                </p-floatlabel>
+            </div>
+            <div>
+                <p-button size="small" type="submit" label="Submit" />
+            </div>
+        </form>
+    </p-card>
+</div>
+
+<!-- <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
@@ -20,7 +42,7 @@
             </div>
             <button type="submit">Login</button>
         </form>
-        <!-- sign in with google button below -->
+        sign in with google button below -->
         <!-- <mat-card-footer>
             <div>
                 <button class="gsi-material-button" (click)="signInWithGoogle()">
@@ -41,5 +63,5 @@
                 </button>
             </div>
         </mat-card-footer> -->
-    </mat-card-content>
-</mat-card>
+    <!-- </mat-card-content>
+</mat-card> --> 

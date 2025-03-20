@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FirebaseMessagingService } from './services/firebase-messaging.service';
-import { getToken, onMessage } from 'firebase/messaging';
+import { MessagePayload } from 'firebase/messaging';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,37 +12,55 @@ import { getToken, onMessage } from 'firebase/messaging';
 export class AppComponent implements OnInit{
   title = 'final-project';
   messager = inject(FirebaseMessagingService);
+  message$!: Subject<MessagePayload>;
+  isServiceWorkerUnregistered = false; // Flag to track unregistration
 
   
   ngOnInit(): void {
-    this.registerServiceWorker();
+    // this.registerServiceWorker();
     this.requestPermission();
+    this.messager.listenForMessages();
+    this.message$ = this.messager.currentMessage;
+    // this.unregisterServiceWorker();
   }
 
-  // requestPermission() {
-  //   console.log("in here")
-  //   Notification.requestPermission().then(permission => {
-  //     if (permission === 'granted') {
-  //       console.log('Notification permission granted.');
-  //       this.messager.getFCMToken();
-  //     }
-  //   });
+  // unregisterServiceWorker(): void {
+  //   navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js')
+  //     .then(registration => {
+  //       if (registration) {
+  //         registration.unregister()
+  //           .then(success => {
+  //             if (success) {
+  //               console.log('Service worker unregistered successfully.');
+  //               this.isServiceWorkerUnregistered = true; // Set the flag
+  //               // Optionally, inform the user that unregistration was successful
+  //             } else {
+  //               console.log('Service worker unregistration failed.');
+  //               // Optionally, inform the user about the failure
+  //             }
+  //           });
+  //       } else {
+  //         console.log('No service worker found to unregister.');
+  //         this.isServiceWorkerUnregistered = true; // Consider it unregistered if not found
+  //         // Optionally, inform the user that no service worker was found
+  //       }
+  //     });
   // }
 
-  async registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        console.log('Service worker registered:', registration);
-        // You might want to get the token here after successful registration
-        // this.messager.getFCMToken();
-      } catch (error) {
-        console.error('Error registering service worker:', error);
-      }
-    } else {
-      console.log('Service workers are not supported in this browser.');
-    }
-  }
+  // async registerServiceWorker() {
+  //   if ('serviceWorker' in navigator) {
+  //     try {
+  //       const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  //       console.log('Service worker registered:', registration);
+  //       // You might want to get the token here after successful registration
+  //       // this.messager.getFCMToken();
+  //     } catch (error) {
+  //       console.error('Error registering service worker:', error);
+  //     }
+  //   } else {
+  //     console.log('Service workers are not supported in this browser.');
+  //   }
+  // }
 
   // async getFCMToken(): Promise<string | null> {
   //   try {

@@ -39,7 +39,7 @@
                 "glob": "firebase-messaging-sw.js",
                 "input": "src",
                 "output": "/"
-              }
+              }             
             ],
             "styles": [
               "@angular/material/prebuilt-themes/rose-red.css",

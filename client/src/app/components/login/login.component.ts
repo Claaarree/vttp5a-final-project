@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit{
     this.loginForm = this.fb.group({
       email: this.fb.control<string>('', Validators.email),
       // Minimum six characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-      password: this.fb.control<string>('', Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$")),
-      username: this.fb.control<string>('')
+      password: this.fb.control<string>('', Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"))
+      // username: this.fb.control<string>('')
     });
   }
 

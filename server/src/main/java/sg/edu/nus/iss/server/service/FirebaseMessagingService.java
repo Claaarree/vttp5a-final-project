@@ -8,6 +8,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import sg.edu.nus.iss.server.model.NotificationMessage;
 
 @Service
@@ -16,7 +18,8 @@ public class FirebaseMessagingService {
     @Autowired
     private FirebaseMessaging firebaseMessaging;
 
-    public String sendNotificationByToken(NotificationMessage notificationMessage) {
+    public JsonObject sendNotificationByToken(NotificationMessage notificationMessage) {
+       
         Notification notification = Notification
                 .builder()
                 .setTitle(notificationMessage.getTitle())
@@ -30,11 +33,18 @@ public class FirebaseMessagingService {
                 .build();
 
         try {
+
             firebaseMessaging.send(message);
-            return "Success sending notification!";
+            JsonObject success = Json.createObjectBuilder()
+                .add("message", "success")
+                .build();
+            return success;
         } catch (FirebaseMessagingException e) {
             e.printStackTrace();
-            return "Error sending notification!";
+            JsonObject failure = Json.createObjectBuilder()
+                .add("message", "failure")
+                .build();
+            return failure;
         }
     }
 }

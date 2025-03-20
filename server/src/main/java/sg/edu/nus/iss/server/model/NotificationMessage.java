@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.server.model;
 
-import java.util.Map;
-
 public class NotificationMessage {
     private String recipientToken;
     private String title;
