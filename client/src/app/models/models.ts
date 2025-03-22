@@ -3,8 +3,19 @@ export interface User {
     password: string
 }
 
+export interface LoginResponse {
+    idToken: string
+    refreshToken: string
+}
+
+export interface TokenSlice{
+    jwt: string
+    refreshToken: string
+    isAuthenticated: boolean
+}
+
 export interface Post {
-    rating: string
+    rating: number
     review: string
     placeId: string
 }
@@ -35,6 +46,11 @@ export interface FinalPost {
     area: string
     lat: number
     lng: number
+}
+
+export interface PostUpdate {
+    rating: number
+    review: string
 }
 
 

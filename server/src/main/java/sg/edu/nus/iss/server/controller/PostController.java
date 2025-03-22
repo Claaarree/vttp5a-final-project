@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import sg.edu.nus.iss.server.service.PostService;
 import sg.edu.nus.iss.server.service.S3Service;
 
@@ -47,8 +50,7 @@ public class PostController {
     }
 
     // TODO
-    @PostMapping(path = "/post/new", produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(path = "/post/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createPost(@RequestPart String post, @RequestPart String place,
     @RequestParam(name = "data") MultipartFile... file) throws IOException {
         System.out.println("XXXXXXX");
@@ -76,6 +78,25 @@ public class PostController {
     }
 
     // TODO update
+    @PutMapping(path = "/post/{postId}")
+    public ResponseEntity<String> updatePost(@PathVariable String postId, 
+    @RequestBody String payload) {
+        JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
+        int updatedRows = 0;
+        try {
+            updatedRows = postService.updatePostById(postId, payload);
+            
+            if (updatedRows == 1){
+                jObjectBuilder.add("message", "The post has successfully been updated!");
+            }
+            return ResponseEntity.ok(jObjectBuilder.build().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jObjectBuilder.add("message", "Hmm there seems to be an issue updating... Please try again later!");
+        return ResponseEntity.badRequest().body(jObjectBuilder.build().toString());
+       
+    }
 
     // TODO handle errors?
     @DeleteMapping(path = "/delete/{postId}") 

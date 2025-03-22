@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.server.model.Post;
 
+import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_POST_BY_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_POST;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.UPDATE_POST_BY_ID;
 
 import java.util.Optional;
 @Repository
@@ -28,13 +30,22 @@ public class MySQLPostRepository {
         
     }
 
-    public void createPost(Post p) throws DataAccessException{
-        jdbcTemplate.update(INSERT_POST, 
+    public int createPost(Post p) throws DataAccessException {
+        return jdbcTemplate.update(INSERT_POST, 
                 p.getPostId(), 
                 p.getRating(), 
                 p.getReview(), 
                 p.getImages(),
                 p.getPlaceId(), 
                 p.getPostDate());
+    }
+
+    public int updatePost(String postId, int rating, String review) 
+    throws DataAccessException{
+        return jdbcTemplate.update(UPDATE_POST_BY_ID, rating, review, postId);
+    }
+
+    public int deletePostById(String postId) throws DataAccessException{
+        return jdbcTemplate.update(DELETE_POST_BY_ID, postId);
     }
 }

@@ -1,0 +1,42 @@
+<p>edit-post works!</p>
+
+<div class="mb-4 p-8 flex items-center justify-center">
+    <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+        <ng-template #header>
+             <!-- display images -->
+             <p-galleria [value]="images" [numVisible]="5" 
+                         [circular]="true" [showItemNavigators]="true" 
+                         [showThumbnails]="false" [containerStyle]="{ 'max-width': '640px' }">
+                 <ng-template #item let-item>
+                     <img [src]="item.src" style="width: 100%; display: block;" />
+                 </ng-template>
+             </p-galleria>
+        </ng-template>
+        <ng-template #title>
+            <div style="display: flex; align-items: center;">
+                <span style="flex-grow: 1;">{{postGot.name}} </span>
+                <img style="cursor: pointer; width: 20px;" (click)="deletePost()" src="/bin-icon.svg">
+            </div>
+        </ng-template>
+        <ng-template #subtitle> {{postGot.address}} <br> {{postGot.area}}</ng-template>
+        <form [formGroup]="form">
+            <!-- rating -->
+            <div class="field">
+                <label for="rating">Rating</label>
+                <p-rating id="rating" formControlName="rating" />
+            </div>
+            <!-- review text area -->
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <textarea pTextarea id="over_label" style="resize: none" class="h-full w-full" formControlName="review"></textarea>
+                    <label for="on_label">Your thoughts...</label>
+                </p-floatlabel>
+            </div>
+        </form>
+        <ng-template #footer>
+            <div class="flex gap-4 mt-1">
+                <p-button [disabled]="form.invalid" (click)="update()">Update</p-button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

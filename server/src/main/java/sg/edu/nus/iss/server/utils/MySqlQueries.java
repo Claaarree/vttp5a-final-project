@@ -19,6 +19,17 @@ public class MySqlQueries {
         """;
 
     public static final String GET_PLACE_BY_PLACE_ID = """
-            select * from places where place_id = ?
-            """;
+        select * from places where place_id = ?
+        """;
+
+    public static final String UPDATE_POST_BY_ID ="""
+        udpate posts set
+            rating = ?,
+            review = ?,
+            where post_id = ?
+        """;
+
+    public static final String DELETE_POST_BY_ID = """
+        delete from posts where post_id = ?
+        """;
 }

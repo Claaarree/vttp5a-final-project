@@ -20,12 +20,14 @@ export class NewPostComponent implements OnInit{
   private postService = inject(PostService);
   form!: FormGroup;
   images: Image[] = [];
-  dataUri: string[] = [];
   post!: Post;
   filelist!: FileList;
+  fileError!: string;
+  placeError!: string;
   // try to get from component store...
   // areas!: string[];
   areas: string[] = ["Central", "East", "West", "North", "NorthEast"];
+  selectedArea!: string;
   selectedPlace! : Place;
 
   async ngOnInit(): Promise<void> {
@@ -60,21 +62,26 @@ export class NewPostComponent implements OnInit{
           // set the image source to result?? yes
           const result = reader.result as string;
           this.images.push({src: result});
-          this.dataUri.push(result);
         };
         reader.readAsDataURL(file);
       });
+    } else {
+      this.fileError = "Please do not upload more than 3 pictures!"
     }
     // TODO inplement throw error if more than 3 files uploaded
   }
 
-  upload() {
-    console.log("dataUri: " + this.dataUri);
-    if(!this.dataUri) {
-      return;
+  postInvalid(): boolean {
+    if(this.form.valid && this.images.length > 0 && this.selectedPlace) {
+      return false;
     }
+    return true;
+  }
+
+  upload() {
     // removing area from form and adding to place
     console.log("area: ", this.form.value.area)
+    console.log("selected: ", this.selectedPlace)
     this.selectedPlace.area = this.form.value.area;
     this.form.removeControl("area");
     // adding placeId to form
@@ -87,15 +94,11 @@ export class NewPostComponent implements OnInit{
 
     this.post = formValue;
     // 
-    // console.log(this.filelist);
+    console.log(this.filelist);
     // 
     this.fileUploadSvc.upload(this.post, this.selectedPlace, this.filelist)
       .then((result) => {
         console.log(result);
-        this.postService.getPostById(result.postId)
-          .then(p => {
-            console.log(p);
-          });
         this.router.navigate(['/viewpost', result.postId])
       })
   }
@@ -105,18 +108,13 @@ export class NewPostComponent implements OnInit{
     this.selectedPlace = place;
   }
 
-  // dataURItoBlob(dataURI: string): Blob{
-  //   const [meta, base64Data] = dataURI.split(',');
-  //   const mimeMatch = meta.match(/:(.*?);/);
-
-  //   const mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
-  //   console.log(mimeMatch);
-  //   const byteString = atob(base64Data);
-  //   const ab = new ArrayBuffer(byteString.length);
-  //   const ia = new Uint8Array(ab);
-  //   for(let i = 0; i < byteString.length; i++){
-  //     ia[i] = byteString.charCodeAt(i);
-  //   }
-  //   return new Blob([ia], {type: mimeType});
-  // }
+  removeImage(i : number) {
+    this.images.splice(i, 1);
+    const newlist = Array.from(this.filelist).splice(i, 1);
+    const dt = new DataTransfer();
+    newlist.forEach(file => {
+      dt.items.add(file);
+    });
+    this.filelist = dt.files;
+  }
 }

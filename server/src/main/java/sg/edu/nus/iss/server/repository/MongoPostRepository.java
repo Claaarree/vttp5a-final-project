@@ -20,14 +20,14 @@ public class MongoPostRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public Document getImagesByPostId(String postId, String uid) {
-        Criteria criteria = Criteria.where("_id")
-                .is("test");
-        Query query = Query.query(criteria);
-        Document images = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
+    // public Document getImagesByPostId(String postId, String uid) {
+    //     Criteria criteria = Criteria.where("_id")
+    //             .is("test");
+    //     Query query = Query.query(criteria);
+    //     Document images = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
 
-        return images;
-    }
+    //     return images;
+    // }
 
     public List<Document> getPostsByPlaceId(String placeId) {
         Criteria criteria = Criteria.where(F_PLACE_ID)

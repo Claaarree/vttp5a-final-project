@@ -1,14 +1,20 @@
 <p>new-post works!</p>
 
-<p-card header="New Post">
-    @if (dataUri.length) {
+<p-card header="New Post" class="flex">
+    @if (images.length) {
         <div class="flex">
             <p-galleria [value]="images" [numVisible]="5" 
-                        [circular]="true" [showItemNavigators]="true" 
+                        [circular]="false" [showItemNavigators]="true" 
                         [showThumbnails]="false" [showIndicators]="true" 
-                        [containerStyle]="{ 'max-width': '640px' }">
-                <ng-template #item let-item>
-                    <img [src]="item.src" style="width: 50%; display: block;" />
+                        [containerStyle]="{ 'max-width': '640px' }"
+                        >
+                <ng-template #item let-item let-i="index" >
+                    <img [src]="item.src" style="width: 100%; display: block;" />
+                    <div style="position: absolute; top: 10px; right: 10px;">
+                        <a (click)="removeImage(i)" style="cursor:pointer;">
+                            <img src="/cross-small-svgrepo-com.svg" height="30px">
+                        </a>
+                    </div>
                 </ng-template>
             </p-galleria>
         </div>
@@ -21,16 +27,20 @@
                 <input id="fileInput" type="file" multiple (change)="onFileChange($event)" accept="image/png, image/jpeg">
             </p-button>
         </div>
+        @if (fileError) {
+            <p style="color: red;">{{fileError}}</p>
+        }
     }
     <!-- google autocomplete places -->
-    <div class="field">
+    <div class="field w-full md:w-56">
         <app-autocomplete (placeSelected)="getPlaceDetails($event)"></app-autocomplete>
     </div>
     <form [formGroup]="form">
         <!-- area select -->
-        <div class="field">
-            <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select inputId="on_label" [options]="areas" styleClass="w-full" formControlName="area"/>
+        <div class="field w-full md:w-56">
+            <p-floatlabel variant="on">
+                <!-- using the ngModel to allow float label to work properly -->
+                <p-select inputId="on_label" [options]="areas" [ngModel]="selectedArea" styleClass="w-full" formControlName="area"/>
                 <label for="on_label">Area</label>
             </p-floatlabel>
         </div>
@@ -46,6 +56,6 @@
                 <label for="on_label">Your thoughts...</label>
             </p-floatlabel>
         </div>
-        <p-button (click)="upload()">Post</p-button>
+        <p-button [disabled]="postInvalid()" (click)="upload()">Post</p-button>
     </form>
 </p-card>

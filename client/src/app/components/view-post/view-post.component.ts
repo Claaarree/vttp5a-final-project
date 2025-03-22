@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FinalPost, Image } from '../../models/models';
 import { PostService } from '../../services/post.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-post',
@@ -13,9 +13,11 @@ export class ViewPostComponent implements OnInit{
   
   postService = inject(PostService);
   activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
   postId = this.activatedRoute.snapshot.params['postId'];
   protected images: Image[] = [];
   showPost!: FinalPost;
+  isSaved: boolean = false;
   
   ngOnInit(): void {
     this.postService.getPostById(this.postId)
@@ -30,5 +32,17 @@ export class ViewPostComponent implements OnInit{
         });
       }
     );
+  }
+
+  editPost() {
+    this.router.navigate(['/editpost', this.postId]);
+  }
+
+  save() {
+    this.isSaved = true;
+  }
+
+  unsave() {
+    this.isSaved = false;
   }
 }

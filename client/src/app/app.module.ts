@@ -18,6 +18,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { MessageService } from 'primeng/api';
 import { MyPreset } from './primeNG/mytheme';
 import { ViewPostComponent } from './components/view-post/view-post.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ViewPostComponent } from './components/view-post/view-post.component';
     LoginComponent,
     NewPostComponent,
     AutocompleteComponent,
-    ViewPostComponent   
+    ViewPostComponent,
+    EditPostComponent   
   ],
   imports: [
     BrowserModule,

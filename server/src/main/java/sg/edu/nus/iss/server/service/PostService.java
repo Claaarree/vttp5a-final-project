@@ -14,6 +14,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import sg.edu.nus.iss.server.components.AuthenticatedUserIdProvider;
 import sg.edu.nus.iss.server.model.Place;
 import sg.edu.nus.iss.server.model.Post;
@@ -79,10 +80,18 @@ public class PostService {
         mongoPostRepository.newPost(postId, "test");
     }
 
-    // TODO update
+    // TODO test update
+    public int updatePostById(String postId, String payload) {
+        JsonObject jObject = Json.createReader(new StringReader(payload)).readObject();
+        return sqlPostRepository.updatePost(postId, 
+        jObject.getInt("rating"), 
+        jObject.getString("review"));
+        
+    }
 
-    public long deletePostById(String postId) {
-        return mongoPostRepository.deletePostById(postId);
+    public int deletePostById(String postId) throws DataAccessException{
+        // TODO remove post id from mongo
+        return sqlPostRepository.deletePostById(postId);
     }
 
     public JsonObject rsToJson(SqlRowSet rs) {

@@ -33,7 +33,9 @@ export class LoginComponent implements OnInit{
     console.log(value)
     const result = this.userSvc.sendLoginRequest(value);
     result.subscribe({
-      next: (data) => console.log(data),
+      next: (data) => {
+        console.log(data)
+      },
       error: (error) => console.log(error)
     })
   }
