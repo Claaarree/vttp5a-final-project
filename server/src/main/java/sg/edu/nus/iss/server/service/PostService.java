@@ -126,6 +126,7 @@ public class PostService {
                 .add("area", rs.getString("area"))
                 .add("lat", rs.getBigDecimal("lat"))
                 .add("lng", rs.getBigDecimal("lng"))
+                .add("postDate", rs.getDate("post_date").getTime())
                 .build();
 
         return jObject;

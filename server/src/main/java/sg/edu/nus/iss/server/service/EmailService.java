@@ -1,15 +1,13 @@
 package sg.edu.nus.iss.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import com.google.api.client.util.Value;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMessage.RecipientType;
 
 @Service
 public class EmailService {
@@ -22,11 +20,15 @@ public class EmailService {
 
     public String sendSimpleEmail(String link, String emailTo) throws MessagingException {
         MimeMessage mailMessage = javaMailSender.createMimeMessage();
+        // mailMessage.setFrom(sender);
+        MimeMessageHelper helper = new MimeMessageHelper(mailMessage, true);
 
-        mailMessage.setFrom(sender);
-        mailMessage.setRecipients(RecipientType.TO, emailTo);
+        helper.setFrom(sender);
+        helper.setTo(emailTo);
+        helper.setSubject("Verify your email"); 
+        
         String htmlContent = """
-            <img src="/CiakWhere.svg"> ChiakWhere?
+            <img width="50px" src="https://lfhc06mar.sgp1.digitaloceanspaces.com/CiakWhere.svg"> ChiakWhere?
             <div>
             <h1>
                 Welcome to ChiakWhere!
@@ -40,14 +42,18 @@ public class EmailService {
             <a href="%s">Verify Your Email By Clicking Here!</a>
             </div>
             """.formatted(link);
-        mailMessage.setContent(htmlContent, "text/html; charset=utf-8");
+
+        helper.setText(htmlContent, true);
+        // File logo = new File("server\\src\\main\\resources\\static\\CiakWhere.svg");
+        // helper.addInline("CiakWhere.svg", logo);
+        // mailMessage.setContent(htmlContent, "text/html; charset=utf-8");
     
-        mailMessage.setSubject("Verify your email");
 
         try {
             javaMailSender.send(mailMessage);
             return "Mail sent successfully...";
         } catch (Exception e) {
+            e.printStackTrace();
             return "Failed to send mail...";
         }
     }

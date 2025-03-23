@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 import sg.edu.nus.iss.server.model.Post;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_POST_BY_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POSTS_BY_USER_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_POST_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_POST;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.UPDATE_POST_BY_ID;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 @Repository
@@ -29,6 +31,13 @@ public class MySQLPostRepository {
             return Optional.empty();
         }
         
+    }
+
+    public void getPostsByUserId(String user_id) throws DataAccessException {
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_POSTS_BY_USER_ID, user_id, yesterday);
+        System.out.println(rs.next());
     }
 
     public int createPost(Post p) throws DataAccessException {

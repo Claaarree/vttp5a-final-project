@@ -35,6 +35,7 @@
         </p>
         <ng-template #footer>
             <div class="flex gap-4 mt-1">
+                <p>{{showPost.postDate | date: 'MMMM d, yyyy' }}</p>
                 <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
                 <p-button label="Save" class="w-full" styleClass="w-full" />
             </div>

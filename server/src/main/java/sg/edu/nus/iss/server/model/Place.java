@@ -66,5 +66,10 @@ public class Place {
 
         return p;
     }
+
+    public JsonObject rsToJson() {
+
+        return null;
+    }
     
 }

@@ -2,6 +2,7 @@ package sg.edu.nus.iss.server.repository;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DECREMENT_POST_COUNT;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_PLACE_BY_PLACE_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_PLACES;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_PLACE_BY_PLACE_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INCREMENT_POST_COUNT;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_PLACE;
@@ -18,6 +19,11 @@ public class MySQLPlaceRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public SqlRowSet getTopPlaces(String area, int offset) {
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_PLACES, area, area, offset);
+        return rs;
+    }
 
     public void createPlace(Place place) throws DataAccessException{
         jdbcTemplate.update(INSERT_PLACE, 

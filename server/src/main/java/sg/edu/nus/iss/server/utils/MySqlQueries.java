@@ -3,9 +3,9 @@ package sg.edu.nus.iss.server.utils;
 public class MySqlQueries {
     public static final String GET_POST_BY_POST_ID = """
         select * from posts p
-            join places pl on 
+        join places pl on 
             p.place_id = pl.place_id
-            where p.post_id = ?;
+        where p.post_id = ?;
         """;
 
     public static final String INSERT_POST = """
@@ -25,13 +25,13 @@ public class MySqlQueries {
     public static final String INCREMENT_POST_COUNT = """
         update places set 
             post_count = post_count + 1
-            where place_id = ?
+        where place_id = ?
         """;
 
     public static final String DECREMENT_POST_COUNT = """
         update places set
             post_count = post_count - 1
-            where place_id = ? and post_count > 1
+        where place_id = ? and post_count > 1
         """;
 
     public static final String DELETE_PLACE_BY_PLACE_ID ="""
@@ -43,10 +43,35 @@ public class MySqlQueries {
             rating = ?,
             review = ?, 
             post_date = ?
-            where post_id = ?
+        where post_id = ?
         """;
 
     public static final String DELETE_POST_BY_ID = """
         delete from posts where post_id = ?
+        """;
+
+    public static final String GET_POSTS_BY_USER_ID = """
+        select * from posts p
+        join places pl on 
+            p.place_id = pl.place_id
+        where p.user_id like ?
+            and p.post_date = ?
+        """;
+
+    public static final String GET_PLACES = """
+        select
+            pl.place_id,pl.name,
+            pl.address, pl.area,
+            pl.lat, pl.lng,
+            pl.post_count,
+            AVG(p.rating) AS average_rating
+        from places pl
+        join posts p ON pl.place_id = p.place_id
+        where (pl.area = ? or ? is NULL)
+        group by
+            pl.place_id
+        order by average_rating desc, name asc
+        limit 10
+        offset ?
         """;
 }

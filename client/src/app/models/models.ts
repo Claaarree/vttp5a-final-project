@@ -49,6 +49,7 @@ export interface FinalPost {
     area: string
     lat: number
     lng: number
+    postDate: number
 }
 
 export interface PostUpdate {
