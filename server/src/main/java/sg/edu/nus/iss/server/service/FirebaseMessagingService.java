@@ -10,13 +10,21 @@ import com.google.firebase.messaging.Notification;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import sg.edu.nus.iss.server.components.AuthenticatedUserIdProvider;
 import sg.edu.nus.iss.server.model.NotificationMessage;
+import sg.edu.nus.iss.server.repository.MongoPostRepository;
 
 @Service
 public class FirebaseMessagingService {
     
     @Autowired
     private FirebaseMessaging firebaseMessaging;
+
+    @Autowired
+    private MongoPostRepository mongoPostRepository;
+
+    @Autowired
+    private AuthenticatedUserIdProvider authenticatedUserIdProvider;
 
     public JsonObject sendNotificationByToken(NotificationMessage notificationMessage) {
        
@@ -28,6 +36,7 @@ public class FirebaseMessagingService {
 
         Message message = Message
                 .builder()
+                // .setTopic(null)
                 .setToken(notificationMessage.getRecipientToken())
                 .setNotification(notification)
                 .build();
@@ -46,5 +55,11 @@ public class FirebaseMessagingService {
                 .build();
             return failure;
         }
+    }
+
+    public void saveFCMToken(String token) {
+        // String userId = authenticatedUserIdProvider.getUserId();
+        // TODO change this back!
+        mongoPostRepository.newFCMToken(token, "test");
     }
 }

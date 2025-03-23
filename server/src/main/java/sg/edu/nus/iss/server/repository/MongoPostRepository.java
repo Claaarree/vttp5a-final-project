@@ -9,8 +9,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import static sg.edu.nus.iss.server.utils.MongoDbConstants.C_INFORMATION;
-import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_PLACE_ID;
+import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_DEVICES;
 import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_POST_ID;
+import static sg.edu.nus.iss.server.utils.MongoDbConstants.F__ID;
 
 import java.util.List;
 
@@ -20,42 +21,27 @@ public class MongoPostRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // public Document getImagesByPostId(String postId, String uid) {
-    //     Criteria criteria = Criteria.where("_id")
-    //             .is("test");
-    //     Query query = Query.query(criteria);
-    //     Document images = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
-
-    //     return images;
-    // }
-
-    public List<Document> getPostsByPlaceId(String placeId) {
-        Criteria criteria = Criteria.where(F_PLACE_ID)
-                .is(placeId);
-        Query query = Query.query(criteria);
-        List<Document> posts = mongoTemplate.find(query, Document.class, C_INFORMATION);
-
-        return posts;
-    }
-
     public void newPost(String postId, String uid) {
-        Query query = Query.query(Criteria.where("_id").is(uid));
+        Query query = Query.query(Criteria.where(F__ID).is(uid));
         Update updateOps = new Update()
-                .push("post_ids", postId);
+                .push(F_POST_ID, postId);
 
-        mongoTemplate.upsert(query, updateOps, "information");
+        mongoTemplate.upsert(query, updateOps, C_INFORMATION);
     }
 
-    // TODO think about how to update....
-    // public void updatePostById(String postId) {
-    //     Query query = Query.query(Criteria.where(F_POST_ID).is(postId));
-    //     Update updateOps = 
-    //     mongoTemplate.up
-    // }
+    public long deletePostById(String postId, String userId) {
+        Query query = Query.query(Criteria.where(F__ID).is(userId));
+        Update updateOps = new Update()
+            .pull(F_POST_ID, postId);
+        return mongoTemplate.updateFirst(query, updateOps, C_INFORMATION).getModifiedCount();
+    }
 
-    public long deletePostById(String postId) {
-        Query query = Query.query(Criteria.where(F_POST_ID).is(postId));
-        return mongoTemplate.remove(query, Document.class, C_INFORMATION).getDeletedCount();
+    public void newFCMToken(String token, String uid) {
+        Query query = Query.query(Criteria.where(F__ID).is(uid));
+        Update updateOps = new Update()
+                .addToSet(F_DEVICES, token);
+
+        mongoTemplate.upsert(query, updateOps, C_INFORMATION);
     }
 
 

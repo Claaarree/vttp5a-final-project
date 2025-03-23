@@ -43,11 +43,11 @@ public class PostController {
         return ResponseEntity.ok(jObject.toString());
     }
 
-    @GetMapping(path = "/posts/{placeId}")
-    public ResponseEntity<String> getPostsByPlaceId(@PathVariable String placeId) {
-        JsonArray posts = postService.getPostsByPlaceId(placeId);
-        return ResponseEntity.ok(posts.toString());
-    }
+    // @GetMapping(path = "/posts/{placeId}")
+    // public ResponseEntity<String> getPostsByPlaceId(@PathVariable String placeId) {
+    //     JsonArray posts = postService.getPostsByPlaceId(placeId);
+    //     return ResponseEntity.ok(posts.toString());
+    // }
 
     // TODO
     @PostMapping(path = "/post/new", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,9 +78,10 @@ public class PostController {
     }
 
     // TODO update
-    @PutMapping(path = "/post/{postId}")
+    @PutMapping(path = "/post/update/{postId}")
     public ResponseEntity<String> updatePost(@PathVariable String postId, 
     @RequestBody String payload) {
+        System.out.println("postid"+postId);
         JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
         int updatedRows = 0;
         try {
@@ -99,9 +100,19 @@ public class PostController {
     }
 
     // TODO handle errors?
-    @DeleteMapping(path = "/delete/{postId}") 
-    public ResponseEntity<String> deletePost(@PathVariable String postId) {
-        long deletedCount = postService.deletePostById(postId);
-        return ResponseEntity.ok(String.valueOf(deletedCount));
+    @DeleteMapping(path = "/post/delete/{postId}") 
+    public ResponseEntity<String> deletePost(@PathVariable String postId, @RequestParam String placeId) {
+        JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
+        try {
+            boolean isDeleted = postService.deletePostById(postId, placeId);
+            if (isDeleted){
+                jObjectBuilder.add("message", "The post has successfully been updated!");
+                return ResponseEntity.ok(jObjectBuilder.build().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jObjectBuilder.add("message", "Hmm there seems to be an issue deleting... Please try again later!");
+        return ResponseEntity.badRequest().body(jObjectBuilder.build().toString());
     }
 }

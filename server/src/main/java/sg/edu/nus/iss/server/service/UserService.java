@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 
+import jakarta.mail.MessagingException;
 import sg.edu.nus.iss.server.components.AuthenticatedUserIdProvider;
 
 @Service
@@ -46,12 +47,15 @@ public class UserService {
             if (e.getMessage().contains("EMAIL_EXISTS")) {
                 System.out.println("Account already exists!");
             }
-        }
+        } catch (MessagingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
     }
 
-    public void sendVerificationEmail(String email) throws FirebaseAuthException {
+    public void sendVerificationEmail(String email) throws FirebaseAuthException, MessagingException {
         String link = firebaseAuth.generateEmailVerificationLink(email);
-        emailService.sendSimpleEmail(link);
+        emailService.sendSimpleEmail(link, email);
     }
 
     public void logout() throws FirebaseAuthException {
@@ -63,4 +67,9 @@ public class UserService {
         String userId = authenticatedUserIdProvider.getUserId();
         return firebaseAuth.getUser(userId);
     }
+
+    public String getDisplayName() throws FirebaseAuthException {
+        return retrieve().getDisplayName();
+    }
+
 }

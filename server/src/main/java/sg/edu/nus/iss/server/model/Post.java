@@ -9,17 +9,31 @@ import jakarta.json.JsonObject;
 
 public class Post {
     private String postId;
+    private String userId;
+    private String displayName;
     private int rating;
     private String review;
     private String images;
     private String placeId;
     private Date postDate;
-    
+
     public String getPostId() {
         return postId;
     }
     public void setPostId(String postId) {
         this.postId = postId;
+    }
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public String getDisplayName() {
+        return displayName;
+    }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
     public String getReview() {
         return review;
@@ -52,13 +66,16 @@ public class Post {
         this.postDate = postDate;
     }
 
-    public static Post jsonToPost(String post, String postId, List<String>endpointUrls) {
+    public static Post jsonToPost(String post, String userId, String displayName, 
+    String postId, List<String>endpointUrls) {
         Post p = new Post();
         JsonObject jsonObject = Json
                 .createReader(new StringReader(post))
                 .readObject();
 
         p.setPostId(postId);
+        p.setUserId(userId);
+        p.setDisplayName(displayName);
         p.setRating(jsonObject.getInt("rating"));
         p.setReview(jsonObject.getString("review"));
         StringBuilder sb = new StringBuilder();
@@ -72,6 +89,7 @@ public class Post {
 
         return p;
     }
+   
 
     
 }

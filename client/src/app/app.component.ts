@@ -13,7 +13,6 @@ export class AppComponent implements OnInit{
   title = 'final-project';
   messager = inject(FirebaseMessagingService);
   message$!: Subject<MessagePayload>;
-  isServiceWorkerUnregistered = false; // Flag to track unregistration
 
   
   ngOnInit(): void {
@@ -21,7 +20,6 @@ export class AppComponent implements OnInit{
     this.requestPermission();
     this.messager.listenForMessages();
     this.message$ = this.messager.currentMessage;
-    // this.unregisterServiceWorker();
   }
 
   // unregisterServiceWorker(): void {
@@ -84,6 +82,7 @@ export class AppComponent implements OnInit{
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
+        // TODO change back!
         this.messager.getFCMToken();
       } else {
         console.log('Permission denied or dismissed.');

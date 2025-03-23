@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { lastValueFrom, Subject } from 'rxjs';
-import { FinalPost, PostUpdate } from '../models/models';
+import { FinalPost, PostUpdate, UpdateResult } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,12 @@ export class PostService {
   }
 
   updatePostById(postId: string, update: PostUpdate) {
-    return lastValueFrom(this.httpClient.put(`/api/post/update/${postId}`, update));
+    return lastValueFrom(this.httpClient.put<UpdateResult>(`/api/post/update/${postId}`, update));
+  }
+
+  deletePostById(postId: string, placeId: string) {
+    const queryParams: HttpParams = new HttpParams()
+        .set("placeId", placeId);
+    return lastValueFrom(this.httpClient.delete(`/api/post/delete/${postId}`, {params: queryParams}))
   }
 }

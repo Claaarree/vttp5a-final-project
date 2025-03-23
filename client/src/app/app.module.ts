@@ -19,6 +19,9 @@ import { MessageService } from 'primeng/api';
 import { MyPreset } from './primeNG/mytheme';
 import { ViewPostComponent } from './components/view-post/view-post.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
+import { TokenQuery } from './state/token.query';
+import { TokenStore } from './state/token.store';
+import { ListPostComponent } from './components/list-post/list-post.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { EditPostComponent } from './components/edit-post/edit-post.component';
     NewPostComponent,
     AutocompleteComponent,
     ViewPostComponent,
-    EditPostComponent   
+    EditPostComponent,
+    ListPostComponent   
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,8 @@ import { EditPostComponent } from './components/edit-post/edit-post.component';
         },
         ripple:true 
     }),
-    MessageService
+    MessageService,
+    TokenQuery, TokenStore
   ],
   bootstrap: [AppComponent]
 })

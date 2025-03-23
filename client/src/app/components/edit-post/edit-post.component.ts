@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Image, FinalPost, PostUpdate } from '../../models/models';
-import { FileUploadService } from '../../services/file-upload.service';
 import { PostService } from '../../services/post.service';
-import { filter } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-post',
@@ -12,14 +11,15 @@ import { filter } from 'rxjs';
   templateUrl: './edit-post.component.html',
   styleUrl: './edit-post.component.css'
 })
-export class EditPostComponent {
-
+export class EditPostComponent implements OnInit{
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private postService = inject(PostService);
+  private messageService = inject(MessageService);
+  private cdf = inject(ChangeDetectorRef);
   form!: FormGroup;
-  images: Image[] = [];
+  images!: Image[];
   postUpdate!: PostUpdate;
 
   previousUrl!: string;
@@ -30,28 +30,16 @@ export class EditPostComponent {
   async ngOnInit(): Promise<void> {
     this.form = this.createForm();
     this.postId = this.activatedRoute.snapshot.params['postId'];
-    this.router.events
-    .pipe(filter((event) => event instanceof NavigationEnd))
-    .subscribe((event: NavigationEnd) => {
-      this.previousUrl = this.currentUrl;
-      this.currentUrl = event.urlAfterRedirects;
-      console.log('Previous URL:', this.previousUrl);
-      console.log('Current URL:', this.currentUrl);
-    });
 
-    // Take actions based on this.previousUrl
-    if (this.previousUrl === `/viewpost/${this.postId}`) {
-      console.log('User came from /some-other-route');
+    if(this.postService.postGot) {
+      console.log("from view")
       this.postGot = this.postService.postGot;
-      
     } else {
-      console.log('User came from /another-route');
-      // Perform different actions
-      await this.postService.getPostById(this.postId).then(
-        payload => this.postGot = payload
-      )
+      console.log("outside view")
+      await this.postService.getPostById(this.postId)
+        .then(payload => this.postGot = payload)
     }
-    console.log(this.postGot);
+
     this.loadFormValues();
   }
 
@@ -63,28 +51,39 @@ export class EditPostComponent {
   }
 
   private loadFormValues() {
+    this.images = [];
+    Array.from(this.postGot.images.split("|")).forEach(s => {
+      this.images.push({src: s});
+    });
     this.form.patchValue({
       rating: this.postGot.rating,
       review: this.postGot.review
     });
-    Array.from(this.postGot.images.split("|")).forEach(s => {
-      this.images.push({src: s});
-    });
   }
 
   deletePost() {
-    // TODO implement delete post
+    // TODO implement delete post route back to profile with all posts
+    this.postService.deletePostById(this.postId, this.postGot.placeId);
+  }
+
+  goBack() {
+    this.router.navigate([`/viewpost/${this.postId}`]);
   }
 
   update() {
-    // TODO finish this too....
+    // TODO finish this too.... should be done?
     this.postUpdate = this.form.value;
-    // 
-    // console.log(this.filelist);
-    // 
     this.postService.updatePostById(this.postId, this.postUpdate)
       .then((result) => {
         console.log(result);
+        this.messageService
+          .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tc", life: 3000 });
+        this.router.navigate(['/viewpost', this.postId])
+      })
+      .catch((error) => {
+        console.log(error);
+        this.messageService
+          .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tc", life: 3000 });
         this.router.navigate(['/viewpost', this.postId])
       })
   }

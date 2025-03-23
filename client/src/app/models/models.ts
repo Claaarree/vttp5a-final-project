@@ -38,9 +38,12 @@ export interface UploadResult {
 }
 
 export interface FinalPost {
+    userId: string
+    displayName: string
     rating: number
     review: string
     images: string
+    placeId: string
     name: string
     address: string
     area: string
@@ -53,6 +56,9 @@ export interface PostUpdate {
     review: string
 }
 
+export interface UpdateResult {
+    message: string
+}
 
 
 

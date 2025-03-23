@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 import sg.edu.nus.iss.server.model.Post;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_POST_BY_ID;
-import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_POST_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_POST;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.UPDATE_POST_BY_ID;
 
+import java.util.Date;
 import java.util.Optional;
 @Repository
 public class MySQLPostRepository {
@@ -21,7 +22,7 @@ public class MySQLPostRepository {
     private JdbcTemplate jdbcTemplate;
 
     public Optional<SqlRowSet> getPostById(String postId) throws DataAccessException{
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(GET_POST_BY_ID, postId);
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(GET_POST_BY_POST_ID, postId);
         if (rowSet.next()){
             return Optional.of(rowSet);
         } else {
@@ -33,6 +34,8 @@ public class MySQLPostRepository {
     public int createPost(Post p) throws DataAccessException {
         return jdbcTemplate.update(INSERT_POST, 
                 p.getPostId(), 
+                p.getUserId(),
+                p.getDisplayName(),
                 p.getRating(), 
                 p.getReview(), 
                 p.getImages(),
@@ -42,7 +45,7 @@ public class MySQLPostRepository {
 
     public int updatePost(String postId, int rating, String review) 
     throws DataAccessException{
-        return jdbcTemplate.update(UPDATE_POST_BY_ID, rating, review, postId);
+        return jdbcTemplate.update(UPDATE_POST_BY_ID, rating, review, new Date(), postId);
     }
 
     public int deletePostById(String postId) throws DataAccessException{

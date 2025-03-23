@@ -1,13 +1,12 @@
-<p>edit-post works!</p>
 
 <div class="mb-4 p-8 flex items-center justify-center">
     <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
         <ng-template #header>
              <!-- display images -->
              <p-galleria [value]="images" [numVisible]="5" 
-                         [circular]="true" [showItemNavigators]="true" 
+                         [circular]="false" [showItemNavigators]="true" 
                          [showThumbnails]="false" [containerStyle]="{ 'max-width': '640px' }">
-                 <ng-template #item let-item>
+                 <ng-template pTemplate="item" let-item>
                      <img [src]="item.src" style="width: 100%; display: block;" />
                  </ng-template>
              </p-galleria>
@@ -34,7 +33,8 @@
             </div>
         </form>
         <ng-template #footer>
-            <div class="flex gap-4 mt-1">
+            <div class="flex justify-content-between mt-1">
+                <p-button (click)="goBack()">Back</p-button>
                 <p-button [disabled]="form.invalid" (click)="update()">Update</p-button>
             </div>
         </ng-template>

@@ -29,7 +29,7 @@
         <ng-template #subtitle> {{showPost.address}} <br> {{showPost.area}}</ng-template>
         <p-rating [ngModel]="showPost.rating" [readonly]="true" />
         <!-- to change to username -->
-        <p>User says:</p>
+        <p>{{showPost.displayName}} says:</p>
         <p>
             {{showPost.review}}
         </p>
