@@ -67,11 +67,17 @@ public class MySqlQueries {
             AVG(p.rating) AS average_rating
         from places pl
         join posts p ON pl.place_id = p.place_id
-        where (pl.area = ? or ? is NULL)
         group by
             pl.place_id
         order by average_rating desc, name asc
-        limit 10
+        limit 50
         offset ?
+        """;
+
+    public static final String GET_POSTS_BY_PLACE_ID = """
+        select * from posts p
+        join places pl on 
+            p.place_id = pl.place_id
+		where p.place_id = ?
         """;
 }

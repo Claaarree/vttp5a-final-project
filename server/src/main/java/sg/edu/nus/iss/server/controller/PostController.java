@@ -39,22 +39,27 @@ public class PostController {
 
     @GetMapping(path = "/post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getPostById(@PathVariable String postId) {
-        JsonObject jObject = postService.getPostById(postId);
-        return ResponseEntity.ok(jObject.toString());
+        try {
+            JsonObject jObject = postService.getPostById(postId);
+            
+            return ResponseEntity.ok(jObject.toString());
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops an error occurred... Please try again later!")
+                    .build();
+            
+            return ResponseEntity.badRequest().body(error.toString());
+        }
     }
-
-    // @GetMapping(path = "/posts/{placeId}")
-    // public ResponseEntity<String> getPostsByPlaceId(@PathVariable String placeId) {
-    //     JsonArray posts = postService.getPostsByPlaceId(placeId);
-    //     return ResponseEntity.ok(posts.toString());
-    // }
 
     // TODO
     @PostMapping(path = "/post/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createPost(@RequestPart String post, @RequestPart String place,
     @RequestParam(name = "data") MultipartFile... file) throws IOException {
-        System.out.println("XXXXXXX");
-        System.out.println(post + " " + file[0].getOriginalFilename() + " " + place);
+        // System.out.println("XXXXXXX");
+        // System.out.println(post + " " + file[0].getOriginalFilename() + " " + place);
         // {"rating":3,"review":"test","placeId":"ChIJ7cXuxpYZ2jERPmwg_xdxMsE"} 
         // Crochet mini cameilla.png 
         // {"placeId":"ChIJ7cXuxpYZ2jERPmwg_xdxMsE","name":"Hellu Coffee","formattedAddress":"137 Amoy St, #01-05 Far East Square, Singapore 049965","lat":1.2833573,"lng":103.8484733}
@@ -70,14 +75,14 @@ public class PostController {
 
             return ResponseEntity.ok(jObject.toString());
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-            // TODO change the body of the response entity
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops the post could not be created... Please try again later!")
+                    .build();
+            return ResponseEntity.badRequest().body(error.toString());
         }
     }
 
-    // TODO update
     @PutMapping(path = "/post/update/{postId}")
     public ResponseEntity<String> updatePost(@PathVariable String postId, 
     @RequestBody String payload) {
@@ -99,14 +104,13 @@ public class PostController {
        
     }
 
-    // TODO handle errors?
     @DeleteMapping(path = "/post/delete/{postId}") 
     public ResponseEntity<String> deletePost(@PathVariable String postId, @RequestParam String placeId) {
         JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
         try {
             boolean isDeleted = postService.deletePostById(postId, placeId);
             if (isDeleted){
-                jObjectBuilder.add("message", "The post has successfully been updated!");
+                jObjectBuilder.add("message", "The post has successfully been deleted!");
                 return ResponseEntity.ok(jObjectBuilder.build().toString());
             }
         } catch (Exception e) {

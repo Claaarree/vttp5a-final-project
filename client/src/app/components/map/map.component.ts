@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MapAdvancedMarker, MapInfoWindow } from '@angular/google-maps';
+import { MapInfo } from '../../models/models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -16,7 +18,7 @@ export class MapComponent implements OnInit{
     this.getLocation();
   }
 
-  content: string[] = ["1", "2", "3"];
+  private router = inject(Router);
   
   options: google.maps.MapOptions = {
     mapId: "DEMO_MAP_ID",
@@ -29,20 +31,29 @@ export class MapComponent implements OnInit{
     altitude: 0
   };
 
-  markers: google.maps.LatLngLiteral[] = [
-    { lat: 1.3521, lng: 103.8198 }, // coords of singapore
-    {lat: 1.347924, lng: 103.8798459},
-    {lat: 12.879721, lng: 121.774017}
-  ];
+  @Input() mapInfo!: MapInfo[];
 
 
 
   protected openInfoWindow(marker: MapAdvancedMarker, idx: number) {
     console.log(idx)
     this.infoWindow.options = {
-      content: this.content[idx]
+      content: this.mapInfo[idx].content
     }
-    this.infoWindow.open(marker)
+    this.infoWindow.open(marker);
+    this.attachInfoWindowClickListener(this.mapInfo[idx].placeId);
+  }
+
+  private attachInfoWindowClickListener(placeId: string) {
+    console.log("inhere")
+    setTimeout(() => {
+      const link = document.getElementById(placeId);
+      if(link) {
+        link.addEventListener('click', () => {
+          this.router.navigate(['/place', placeId]);
+        })
+      }
+    }, 100)
   }
 
   protected getLocation() {

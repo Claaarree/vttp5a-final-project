@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FirebaseMessagingService } from './services/firebase-messaging.service';
 import { MessagePayload } from 'firebase/messaging';
 import { Subject } from 'rxjs';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent implements OnInit{
   title = 'final-project';
   messager = inject(FirebaseMessagingService);
   message$!: Subject<MessagePayload>;
+  items: MenuItem[] | undefined;
 
   
   ngOnInit(): void {
@@ -20,6 +22,42 @@ export class AppComponent implements OnInit{
     this.requestPermission();
     this.messager.listenForMessages();
     this.message$ = this.messager.currentMessage;
+    this.items = [
+        {
+          label: 'Home',
+          icon: '/home-svgrepo-com.svg',
+          route: ['/viewplaces']
+        },
+        {
+          label: 'Explore',
+          icon: '/compass-svgrepo-com.svg',
+          route: ['/viewplaces']
+        },
+        {
+          label: 'Create',
+          icon: '/plus-svgrepo-com.svg',
+          route: ['/newpost']
+        },
+        {
+            label: 'My Profile',
+            icon: '/profile-round-1342-svgrepo-com.svg',
+            items: [
+                {
+                  label: 'My Posts',
+                  icon: '/camera-svgrepo-com.svg',
+                },
+                {
+                  label: 'Following',
+                  icon: '/heart-svgrepo-com.svg',                    
+                },              
+                {
+                  label: 'Saved Posts',
+                  icon: '/bookmark-svgrepo-com.svg',                    
+                },
+            ],
+        },
+    ];
+
   }
 
   // unregisterServiceWorker(): void {

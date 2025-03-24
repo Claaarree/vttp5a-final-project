@@ -11,6 +11,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { RatingModule } from 'primeng/rating';
 import { GalleriaModule } from 'primeng/galleria';
 import { MenubarModule } from 'primeng/menubar';
+import { ImageModule } from 'primeng/image';
+import { DialogModule } from 'primeng/dialog';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 @NgModule({
@@ -27,7 +30,10 @@ import { MenubarModule } from 'primeng/menubar';
     TextareaModule,
     RatingModule,
     GalleriaModule,
-    MenubarModule
+    MenubarModule,
+    ImageModule,
+    DialogModule,
+    SelectButtonModule
   ],
   exports: [
     CommonModule,
@@ -41,7 +47,10 @@ import { MenubarModule } from 'primeng/menubar';
     TextareaModule,
     RatingModule,
     GalleriaModule,
-    MenubarModule
+    MenubarModule,
+    ImageModule,
+    DialogModule,
+    SelectButtonModule
   ]
 })
 export class PrimeNGModule { }

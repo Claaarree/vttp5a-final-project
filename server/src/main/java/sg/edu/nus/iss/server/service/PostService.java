@@ -45,7 +45,7 @@ public class PostService {
 
     // private String userId = authenticatedUserIdProvider.getUserId();
 
-    public JsonObject getPostById(String postId) {
+    public JsonObject getPostById(String postId) throws DataAccessException{
         Optional<SqlRowSet> opt = sqlPostRepository.getPostById(postId);
         
         JsonObject jsonObject = null;
@@ -59,16 +59,18 @@ public class PostService {
         return jsonObject;
     }
 
-    // public JsonArray getPostsByPlaceId(String placeId) {
-    //     List<Document> posts = mongoPostRepository.getPostsByPlaceId(placeId);
-    //     JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
-    //     for(Document d: posts) {
-    //         JsonObject jObject = Json.createReader(new StringReader(d.toJson())).readObject();
-    //         jArrayBuilder.add(jObject);
-    //     }
+    public JsonArray getPostsByPlaceId(String placeId) throws DataAccessException{
+        Optional<SqlRowSet> opt = sqlPostRepository.getPostsByPlaceId(placeId);
+        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
+        if(opt.isPresent()){
+            SqlRowSet rs = opt.get();
+            while(rs.next()){
+                jArrayBuilder.add(rsToJson(rs));
+            }
+        }
 
-    //     return jArrayBuilder.build();
-    // }
+        return jArrayBuilder.build();
+    }
 
     @Transactional
     public void createPost(String postId, 
@@ -90,7 +92,7 @@ public class PostService {
         // mongoPostRepository.newPost(postId, "test");
     }
 
-    public int updatePostById(String postId, String payload) {
+    public int updatePostById(String postId, String payload) throws DataAccessException{
         JsonObject jObject = Json.createReader(new StringReader(payload)).readObject();
         return sqlPostRepository.updatePost(postId, 
                 jObject.getInt("rating"), 
@@ -111,7 +113,7 @@ public class PostService {
         return false;
     }
 
-    public JsonObject rsToJson(SqlRowSet rs) {
+    public static JsonObject rsToJson(SqlRowSet rs) {
         String imageChain = rs.getString("images").substring(1);
 
         JsonObject jObject = Json.createObjectBuilder()

@@ -43,6 +43,7 @@ export class NewPostComponent implements OnInit{
   }
 
   selectFiles() {
+    this.fileError='';
     document.getElementById('fileInput')?.click()
   }
 
@@ -68,7 +69,6 @@ export class NewPostComponent implements OnInit{
     } else {
       this.fileError = "Please do not upload more than 3 pictures!"
     }
-    // TODO inplement throw error if more than 3 files uploaded
   }
 
   postInvalid(): boolean {
@@ -109,12 +109,14 @@ export class NewPostComponent implements OnInit{
   }
 
   removeImage(i : number) {
-    this.images.splice(i, 1);
-    const newlist = Array.from(this.filelist).splice(i, 1);
+    const newlist = Array.from(this.filelist);
     const dt = new DataTransfer();
-    newlist.forEach(file => {
-      dt.items.add(file);
+    newlist.forEach((file: File, idx: number) => {
+      if(idx !== i){
+        dt.items.add(file);
+      }
     });
     this.filelist = dt.files;
+    this.images.splice(i, 1);
   }
 }

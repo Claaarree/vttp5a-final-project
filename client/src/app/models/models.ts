@@ -61,5 +61,22 @@ export interface UpdateResult {
     message: string
 }
 
+export interface FinalPlace {
+    placeId: string
+    name: string
+    address: string
+    area: string
+    lat: number
+    lng: number
+    postCount: number
+    averageRating: number
+}
+
+export interface MapInfo {
+    placeId: string
+    coords: google.maps.LatLngLiteral
+    content: string
+}
+
 
 

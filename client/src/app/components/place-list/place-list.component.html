@@ -1,0 +1,53 @@
+<div class="flex">
+    <div class="col-7">
+        <p-selectbutton [options]="stateOptions" [(ngModel)]="view" optionLabel="label" optionValue="value" aria-labelledby="basic" />
+    </div>
+    <div class="col-5">
+        <p-floatlabel variant="on">
+            <!-- using the ngModel to allow float label to work properly -->
+            <p-select inputId="on_label" (onChange)="filterAreas()" [options]="areas"[(ngModel)]="selectedArea" styleClass="w-full"/>
+            <label for="on_label">Area</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+    @if (places) {
+        @if(view === "list view") {
+            @for (place of places; let idx = $index; track idx) {
+                <div class="mb-1 p-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 px-2">
+                    <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+                        <ng-template #title>
+                            <div style="display: flex; align-items: center;">
+                                <span style="flex-grow: 1;">{{place.name}} </span>
+                                <p-rating style="cursor: default;" [stars]="1" ngModel="1" [readonly]="true"></p-rating>
+                                {{place.averageRating}}/5
+                            </div>
+                        </ng-template>
+                        <ng-template #subtitle> {{place.address}} <br> {{place.area}} </ng-template>
+                        <ng-template #footer>
+                            <div class="flex gap-4 mt-1">
+                                <p-button class="w-full" styleClass="w-full">View Posts({{place.postCount}})</p-button>
+                                <!-- get static map -->
+                                <p-button (onClick)="getMapUrl(place)" label="View on Map" severity="warn" class="w-full" styleClass="w-full" />
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            }
+        }
+        @else {
+            <div class="p-2">
+                <app-map [mapInfo]="mapInfo"></app-map> 
+            </div>
+        }
+
+    }
+    @else {
+        <p>{{error}}</p>
+    }
+
+    @if (showMap) {
+        <p-dialog [(visible)]="showMap" [modal]="true" [draggable]="false">
+            <img [src]="mapUrl">
+        </p-dialog>
+    }   

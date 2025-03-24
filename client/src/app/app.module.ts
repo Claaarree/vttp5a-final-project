@@ -22,6 +22,7 @@ import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { TokenQuery } from './state/token.query';
 import { TokenStore } from './state/token.store';
 import { ListPostComponent } from './components/list-post/list-post.component';
+import { PlaceListComponent } from './components/place-list/place-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ListPostComponent } from './components/list-post/list-post.component';
     AutocompleteComponent,
     ViewPostComponent,
     EditPostComponent,
-    ListPostComponent   
+    ListPostComponent,
+    PlaceListComponent   
   ],
   imports: [
     BrowserModule,

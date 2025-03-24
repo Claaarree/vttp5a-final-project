@@ -1,10 +1,8 @@
-<p>new-post works!</p>
-
 <p-card header="New Post" class="flex">
     @if (images.length) {
         <div class="flex">
             <p-galleria [value]="images" [numVisible]="5" 
-                        [circular]="false" [showItemNavigators]="true" 
+                        [circular]="false" [showItemNavigators]="images.length > 1? true: false" 
                         [showThumbnails]="false" [showIndicators]="true" 
                         [containerStyle]="{ 'max-width': '640px' }"
                         >

@@ -2,6 +2,8 @@ package sg.edu.nus.iss.server.model;
 
 import java.io.StringReader;
 
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
@@ -67,9 +69,19 @@ public class Place {
         return p;
     }
 
-    public JsonObject rsToJson() {
+    public static JsonObject rsToJson(SqlRowSet rs) {
+        JsonObject jObject = Json.createObjectBuilder()
+                .add("placeId", rs.getString("place_id"))
+                .add("name", rs.getString("name"))
+                .add("address", rs.getString("address"))
+                .add("area", rs.getString("area"))
+                .add("lat", rs.getDouble("lat"))
+                .add("lng", rs.getDouble("lng"))
+                .add("postCount", rs.getInt("post_count"))
+                .add("averageRating", rs.getDouble("average_rating"))
+                .build();
 
-        return null;
+        return jObject;
     }
     
 }

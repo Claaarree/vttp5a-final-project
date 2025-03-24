@@ -20,8 +20,8 @@ public class MySQLPlaceRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public SqlRowSet getTopPlaces(String area, int offset) {
-        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_PLACES, area, area, offset);
+    public SqlRowSet getTopPlaces(int offset) throws DataAccessException{
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_PLACES, offset);
         return rs;
     }
 

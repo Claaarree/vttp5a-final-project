@@ -1,17 +1,15 @@
-<p>map works!</p>
-
-<div class="map-container">
+<div class="map-container flex">
     <google-map [options]="options" [center]="center">
-        @for (marker of markers; let idx = $index; track idx) {
+        @for (marker of mapInfo; let idx = $index; track idx) {
             <map-advanced-marker 
                 #pin="mapAdvancedMarker" 
-                [position]="marker" 
+                [position]="marker.coords" 
                 (mapClick)="openInfoWindow(pin, idx)">
             </map-advanced-marker>
             <map-info-window></map-info-window>
         }
     </google-map>
-    <button (click)="getLocation()">Geolocate</button>
+    <!-- <button (click)="getLocation()">Geolocate</button> -->
 </div>
 
  
