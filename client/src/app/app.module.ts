@@ -21,8 +21,9 @@ import { ViewPostComponent } from './components/view-post/view-post.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { TokenQuery } from './state/token.query';
 import { TokenStore } from './state/token.store';
-import { ListPostComponent } from './components/list-post/list-post.component';
+import { PlaceProfileComponent } from './components/place-profile/place-profile.component';
 import { PlaceListComponent } from './components/place-list/place-list.component';
+import { PostSummaryComponent } from './components/post-summary/post-summary.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +34,9 @@ import { PlaceListComponent } from './components/place-list/place-list.component
     AutocompleteComponent,
     ViewPostComponent,
     EditPostComponent,
-    ListPostComponent,
-    PlaceListComponent   
+    PlaceProfileComponent,
+    PlaceListComponent,
+    PostSummaryComponent   
   ],
   imports: [
     BrowserModule,

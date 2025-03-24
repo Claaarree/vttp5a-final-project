@@ -14,6 +14,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { ImageModule } from 'primeng/image';
 import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { SplitterModule } from 'primeng/splitter';
+import { DividerModule } from 'primeng/divider';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     MenubarModule,
     ImageModule,
     DialogModule,
-    SelectButtonModule
+    SelectButtonModule,
+    SplitterModule,
+    DividerModule
   ],
   exports: [
     CommonModule,
@@ -50,7 +54,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     MenubarModule,
     ImageModule,
     DialogModule,
-    SelectButtonModule
+    SelectButtonModule,
+    SplitterModule,
+    DividerModule
   ]
 })
 export class PrimeNGModule { }

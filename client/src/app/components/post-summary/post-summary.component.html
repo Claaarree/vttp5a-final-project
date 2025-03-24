@@ -1,0 +1,22 @@
+<p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+    <ng-template #header>
+        <!-- display images -->
+        <p-galleria [value]="images" [numVisible]="5" 
+                    [circular]="true" [showItemNavigators]="images.length > 1? true: false" 
+                    [showThumbnails]="false" [showIndicators]="false" 
+                    [containerStyle]="{ 'max-width': '640px' }">
+            <ng-template #item let-item>
+                <img [src]="item.src" style="width: 100%; display: block;" />
+            </ng-template>
+        </p-galleria>
+   </ng-template>
+   <ng-template #title>
+    <div class="flex align-items-center justify-content-between">
+        <div class="flex align-items-center">
+            <p-rating style="cursor: default;" [stars]="1" ngModel="1" [readonly]="true"></p-rating>
+            {{post.rating}}/5
+        </div>
+        <img (click)="seePostDetails()" style="cursor: pointer;" width="25" src="/details-more-svgrepo-com.svg">
+    </div>
+   </ng-template>
+</p-card>

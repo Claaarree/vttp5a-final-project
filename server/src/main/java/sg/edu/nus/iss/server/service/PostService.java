@@ -117,6 +117,7 @@ public class PostService {
         String imageChain = rs.getString("images").substring(1);
 
         JsonObject jObject = Json.createObjectBuilder()
+                .add("postId", rs.getString("post_id"))
                 .add("userId", rs.getString("user_id"))
                 .add("displayName", rs.getString("display_name"))
                 .add("rating", rs.getInt("rating"))

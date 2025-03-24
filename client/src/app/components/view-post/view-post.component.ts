@@ -18,6 +18,7 @@ export class ViewPostComponent implements OnInit{
   protected images: Image[] = [];
   showPost!: FinalPost;
   isSaved: boolean = false;
+  isOwner: boolean = false;
   
   ngOnInit(): void {
     this.postService.getPostById(this.postId)
@@ -38,6 +39,7 @@ export class ViewPostComponent implements OnInit{
     this.router.navigate(['/editpost', this.postId]);
   }
 
+  // also to do check if post belowngs to user for edit
   save() {
     this.isSaved = true;
   }

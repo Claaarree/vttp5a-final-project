@@ -19,7 +19,15 @@ public class MySqlQueries {
         """;
 
     public static final String GET_PLACE_BY_PLACE_ID = """
-        select * from places where place_id = ?
+        select
+            pl.place_id,pl.name,
+            pl.address, pl.area,
+            pl.lat, pl.lng,
+            pl.post_count,
+            AVG(p.rating) AS average_rating
+        from places pl
+        join posts p ON pl.place_id = p.place_id
+        where pl.place_id = ?
         """;
 
     public static final String INCREMENT_POST_COUNT = """

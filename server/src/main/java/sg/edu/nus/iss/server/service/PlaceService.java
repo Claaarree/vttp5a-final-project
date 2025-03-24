@@ -35,5 +35,13 @@ public class PlaceService {
         return jArrayBuilder.build();
     }
 
-    
+    public Optional<JsonObject> getPlaceByPlaceId(String placeId) throws DataAccessException{
+        SqlRowSet rs = placeRepository.getPlaceByPlaceId(placeId);
+        if(rs.next()){
+            JsonObject jObject = Place.rsToJson(rs);
+            return Optional.of(jObject);
+        } else{
+            return Optional.empty();
+        }
+    }
 }

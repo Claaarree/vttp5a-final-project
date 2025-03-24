@@ -38,6 +38,7 @@ export interface UploadResult {
 }
 
 export interface FinalPost {
+    postId: string
     userId: string
     displayName: string
     rating: number

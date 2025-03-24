@@ -5,6 +5,7 @@ import { ViewPostComponent } from './components/view-post/view-post.component';
 import { NewPostComponent } from './components/new-post/new-post.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { PlaceListComponent } from './components/place-list/place-list.component';
+import { PlaceProfileComponent } from './components/place-profile/place-profile.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -12,8 +13,7 @@ const routes: Routes = [
   {path: 'viewpost/:postId', component: ViewPostComponent},
   {path: 'editpost/:postId', component: EditPostComponent},
   {path: 'viewplaces', component: PlaceListComponent},
-  // TODO change this
-  {path: 'place/:placeId', component: NewPostComponent},
+  {path: 'place/:placeId', component: PlaceProfileComponent},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

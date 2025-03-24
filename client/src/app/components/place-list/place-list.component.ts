@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, Output } from '@angular/core';
 import { FinalPlace, MapInfo } from '../../models/models';
 import { PlaceService } from '../../services/place.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-place-list',
@@ -11,6 +12,7 @@ import { PlaceService } from '../../services/place.service';
 export class PlaceListComponent implements OnInit{
   
   private placeSvc = inject(PlaceService);
+  private router = inject(Router);
   places!: FinalPlace[];
   allPlaces!: FinalPlace[];
   error!: string;
@@ -65,6 +67,8 @@ export class PlaceListComponent implements OnInit{
     this.mapUrl = `https://www.onemap.gov.sg/api/staticmap/getStaticImage?layerchosen=default&zoom=17&height=450&width=450&lat=${place.lat}&lng=${place.lng}&points=%5B${place.lat}%2C%20${place.lng}%5D`;
   }
 
-
+  goToPlaceProfile(placeId: string) {
+    this.router.navigate([`/place/${placeId}`]);
+  }
 
 }

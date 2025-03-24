@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.server.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,5 +60,22 @@ public class PlaceController {
                     .build();
             return ResponseEntity.ok().body(error.toString());
         }
+    }
+
+    @GetMapping("/profile/{placeId}")
+    public ResponseEntity<String> getPlaceByPlaceId(@PathVariable String placeId) {
+        try {
+            Optional<JsonObject> opt = placeService.getPlaceByPlaceId(placeId);
+            if(opt.isPresent()){
+                return ResponseEntity.ok().body(opt.get().toString());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        JsonObject error = Json.createObjectBuilder()
+            .add("message", "Oops there seems to be an error... Please try again later!")
+            .build();
+        return ResponseEntity.badRequest().body(error.toString());
     }
 }

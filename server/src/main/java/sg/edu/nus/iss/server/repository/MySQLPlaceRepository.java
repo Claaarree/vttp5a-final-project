@@ -25,6 +25,10 @@ public class MySQLPlaceRepository {
         return rs;
     }
 
+    public SqlRowSet getPlaceByPlaceId(String placeId) throws DataAccessException{
+        return jdbcTemplate.queryForRowSet(GET_PLACE_BY_PLACE_ID, placeId);
+    }
+
     public void createPlace(Place place) throws DataAccessException{
         jdbcTemplate.update(INSERT_PLACE, 
                 place.getPlaceId(), 
