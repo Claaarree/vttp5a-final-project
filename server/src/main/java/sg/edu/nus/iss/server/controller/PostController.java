@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +44,30 @@ public class PostController {
             return ResponseEntity.ok(jObject.toString());
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops an error occurred... Please try again later!")
+                    .build();
+            
+            return ResponseEntity.badRequest().body(error.toString());
+        }
+    }
+
+    @GetMapping("/posts/{userId}")
+    public ResponseEntity<String> getAllPostsByUserId(@PathVariable String userId) {
+        try {
+            JsonArray jArray = postService.getAllPostsByUserId(userId);
+            if(jArray.isEmpty()){
+                JsonObject empty = Json.createObjectBuilder()
+                    .add("message", "This user has no posts yet!")
+                    .build();
+            
+                return ResponseEntity.ok().body(empty.toString());
+            } else {
+                return ResponseEntity.ok().body(jArray.toString());
+            }
+            
+        } catch (Exception e) {
             e.printStackTrace();
             JsonObject error = Json.createObjectBuilder()
                     .add("message", "Oops an error occurred... Please try again later!")

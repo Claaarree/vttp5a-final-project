@@ -4,11 +4,13 @@ export interface User {
 }
 
 export interface LoginResponse {
+    userId: string
     idToken: string
     refreshToken: string
 }
 
 export interface TokenSlice{
+    userId: string
     jwt: string
     refreshToken: string
     isAuthenticated: boolean

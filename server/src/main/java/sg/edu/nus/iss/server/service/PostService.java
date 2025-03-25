@@ -59,14 +59,23 @@ public class PostService {
         return jsonObject;
     }
 
-    public JsonArray getPostsByPlaceId(String placeId) throws DataAccessException{
-        Optional<SqlRowSet> opt = sqlPostRepository.getPostsByPlaceId(placeId);
+    public JsonArray getPostsByPlaceId(String placeId) throws DataAccessException {
+        SqlRowSet rs = sqlPostRepository.getPostsByPlaceId(placeId);
         JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
-        if(opt.isPresent()){
-            SqlRowSet rs = opt.get();
-            while(rs.next()){
-                jArrayBuilder.add(rsToJson(rs));
-            }
+        
+        while(rs.next()){
+            jArrayBuilder.add(rsToJson(rs));
+        }
+
+        return jArrayBuilder.build();
+    }
+
+    public JsonArray getAllPostsByUserId(String userId) throws DataAccessException {
+        SqlRowSet rs = sqlPostRepository.getAllPostsByUserId(userId);
+        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
+        while (rs.next()) {
+            JsonObject jObject = rsToJson(rs);
+            jArrayBuilder.add(jObject);
         }
 
         return jArrayBuilder.build();

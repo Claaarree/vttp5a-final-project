@@ -24,6 +24,7 @@ import { TokenStore } from './state/token.store';
 import { PlaceProfileComponent } from './components/place-profile/place-profile.component';
 import { PlaceListComponent } from './components/place-list/place-list.component';
 import { PostSummaryComponent } from './components/post-summary/post-summary.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { PostSummaryComponent } from './components/post-summary/post-summary.com
     EditPostComponent,
     PlaceProfileComponent,
     PlaceListComponent,
-    PostSummaryComponent   
+    PostSummaryComponent,
+    UserProfileComponent   
   ],
   imports: [
     BrowserModule,

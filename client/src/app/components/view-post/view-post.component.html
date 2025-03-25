@@ -12,7 +12,7 @@
         </ng-template>
         <ng-template #title>
             <div style="display: flex; align-items: center;">
-                <span style="flex-grow: 1;">{{showPost.name}} </span>
+                <span style="flex-grow: 1;" class="place" (click)="goToLocation()">{{showPost.name}} </span>
                 <!-- bookmark -->
                  @if (isSaved) {
                     <img style="cursor: pointer; width: 25px;" (click)="unsave()" src="/bookmark-svgrepo-com.svg">
@@ -25,15 +25,18 @@
         <ng-template #subtitle> {{showPost.address}} <br> {{showPost.area}}</ng-template>
         <p-rating [ngModel]="showPost.rating" [readonly]="true" />
         <!-- to change to username -->
-        <p>{{showPost.displayName}} says:</p>
+        <p><span class="profile" (click)="goToUserProfile()">&#64;{{showPost.displayName}}</span> says:</p>
         <p>
             {{showPost.review}}
         </p>
         <ng-template #footer>
-            <p>{{showPost.postDate | date: 'MMMM d, yyyy' }}</p>
-            <div class="flex gap-4 mt-1">
-                <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
-                <p-button label="Save" class="w-full" styleClass="w-full" />
+            <div class="flex gap-4 mt-1 justify-content-between align-items-center">
+                <p-button (onClick)="goBack()" severity="secondary" [outlined]="true" label="Back">
+                    <ng-template pTemplate="icon">
+                        <img width="20px" src="/back-svgrepo-com.svg">
+                    </ng-template>
+                </p-button>
+                <p class="m-0">{{showPost.postDate | date: 'MMMM d, yyyy' }}</p>
                 @if (isOwner) {
                     <div style="display: flex; justify-content: flex-end;">
                         <img style="cursor: pointer; width: 20px; margin-left: 8px;" (click)="editPost()" src="/edit-icon.svg">

@@ -10,6 +10,10 @@ export class TokenQuery extends Query<TokenSlice>{
         super(tokenStore);
     }
 
+    getUserId(): Observable<string> {
+        return this.select((state: TokenSlice) => state.userId);
+    }
+
     getJwtToken(): Observable<string> {
         return this.select((state: TokenSlice) => state.jwt);
     }

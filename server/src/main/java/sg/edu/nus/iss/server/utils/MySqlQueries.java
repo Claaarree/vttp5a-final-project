@@ -58,12 +58,21 @@ public class MySqlQueries {
         delete from posts where post_id = ?
         """;
 
-    public static final String GET_POSTS_BY_USER_ID = """
+    public static final String GET_RECENT_POSTS_BY_USER_ID = """
         select * from posts p
         join places pl on 
             p.place_id = pl.place_id
-        where p.user_id like ?
-            and p.post_date = ?
+        where p.user_id = ?
+            and p.post_date >= ?
+        order by p.post_date desc
+        """;
+
+    public static final String GET_ALL_POST_BY_USER_ID = """
+        select * from posts p
+            join places pl 
+            on p.place_id = pl.place_id 
+            where p.user_id = ?
+            order by p.post_date desc
         """;
 
     public static final String GET_PLACES = """

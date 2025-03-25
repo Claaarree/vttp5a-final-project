@@ -6,6 +6,7 @@ import { NewPostComponent } from './components/new-post/new-post.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { PlaceListComponent } from './components/place-list/place-list.component';
 import { PlaceProfileComponent } from './components/place-profile/place-profile.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'editpost/:postId', component: EditPostComponent},
   {path: 'viewplaces', component: PlaceListComponent},
   {path: 'place/:placeId', component: PlaceProfileComponent},
+  {path: 'user/:userId', component: UserProfileComponent},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

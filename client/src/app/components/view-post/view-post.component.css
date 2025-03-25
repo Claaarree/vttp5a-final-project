@@ -1,0 +1,11 @@
+.profile {
+    cursor: pointer;
+    color: cornflowerblue;
+}
+.place {
+    cursor: pointer;
+}
+
+.profile, .place:hover {
+    text-decoration: underline;
+}

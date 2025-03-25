@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FinalPost, Image } from '../../models/models';
 import { PostService } from '../../services/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { TokenQuery } from '../../state/token.query';
 
 @Component({
   selector: 'app-view-post',
@@ -14,6 +16,9 @@ export class ViewPostComponent implements OnInit{
   postService = inject(PostService);
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  location = inject(Location);
+  tokenQuery = inject(TokenQuery);
+
   postId = this.activatedRoute.snapshot.params['postId'];
   protected images: Image[] = [];
   showPost!: FinalPost;
@@ -33,10 +38,23 @@ export class ViewPostComponent implements OnInit{
         });
       }
     );
+    this.tokenQuery.getUserId()
+  }
+
+  goToLocation() {
+    this.router.navigate([`/place/${this.showPost.placeId}`])
+  }
+
+  goToUserProfile() {
+    this.router.navigate([`/user/${this.showPost.userId}`]);
   }
 
   editPost() {
     this.router.navigate(['/editpost', this.postId]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   // also to do check if post belowngs to user for edit

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LoginResponse, User } from '../models/models';
-import { catchError, Observable, take, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { TokenStore } from '../state/token.store';
 import { TokenQuery } from '../state/token.query';
 
@@ -23,7 +23,7 @@ export class UserService {
     console.log(u)
     return this.httpClient.post<LoginResponse>("/api/user/login", u).pipe(
       tap((response) => {
-        this.tokenStore.setToken(response.idToken, response.refreshToken);
+        this.tokenStore.setToken(response.userId, response.idToken, response.refreshToken);
       })
     )
   }
@@ -51,7 +51,6 @@ export class UserService {
       } else {
         console.log('No token available for logout.');
         this.tokenStore.clearToken();
-        // Optionally redirect the user, etc.
       }
     });
   }

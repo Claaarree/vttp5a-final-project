@@ -1,0 +1,28 @@
+
+<div class="flex flex-column align-items-center">
+    <p-card class="w-full">
+        <ng-template #title>
+            <div class="flex align-items-center justify-content-between w-full">
+                <p class="m-0 mr-2">&#64;{{posts[0].displayName}}</p>
+                <p-button>Follow</p-button>
+            </div>
+        </ng-template>
+        <p class="m-0">
+            Post Count: {{posts.length}}
+        </p>
+    </p-card>
+
+    <div class="grid mt-2 w-full">
+        @if (posts.length === 1) {
+            <div class="col-12 flex justify-content-center">
+                <app-post-summary [post]="posts[0]"></app-post-summary>
+            </div>
+        } @else {
+            @for (post of posts; track $index) {
+                <div class="col-12 md:col-6 flex justify-content-center">
+                    <app-post-summary [post]="post"></app-post-summary>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { FinalPlace, FinalPost } from '../models/models';
+import { FinalPlace, FinalPost, UpdateResult } from '../models/models';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class PlaceService {
   }
 
   public getPostsByPlaceId(placeId: string) {
-    return lastValueFrom(this.httpClient.get<FinalPost[]>(`/api/places/${placeId}`));
+    return lastValueFrom(this.httpClient.get<FinalPost[] | UpdateResult>(`/api/places/${placeId}`));
   }
 
   public getPlaceByPlaceId(placeId: string) {

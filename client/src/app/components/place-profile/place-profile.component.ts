@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PlaceService } from '../../services/place.service';
 import { FinalPlace, FinalPost } from '../../models/models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-place-profile',
@@ -13,6 +14,7 @@ export class PlaceProfileComponent implements OnInit{
   
   private placeSvc = inject(PlaceService);
   private activatedRoute = inject(ActivatedRoute);
+  private messageService = inject(MessageService);
   placeId!: string 
   posts!: FinalPost[];
   place!: FinalPlace;
@@ -22,8 +24,18 @@ export class PlaceProfileComponent implements OnInit{
     // place id from activatd route 
     this.placeId = this.activatedRoute.snapshot.params['placeId'];
     this.placeSvc.getPostsByPlaceId(this.placeId).then(
-      (payload) => this.posts = payload
-    ).catch(err => alert(err));
+      (payload) => {
+        if(Array.isArray(payload)){
+          this.posts = payload
+        } else{
+          this.messageService
+          .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });
+        }
+      }
+    ).catch(err => {
+      this.messageService
+          .add({ severity: 'error', summary: 'Oops...', detail: err.message, key: "tc", life: 3000 });
+    });
     this.placeSvc.getPlaceByPlaceId(this.placeId).then(
       (place) => {
         this.place = place;

@@ -22,15 +22,15 @@
 </div>
 
 <div class="grid">
-    @if (posts.length === 1) {
-      <div class="col-12 flex justify-content-center">
-        <app-post-summary [post]="posts[0]"></app-post-summary>
+  @if (posts.length === 1) {
+    <div class="col-12 flex justify-content-center">
+      <app-post-summary [post]="posts[0]"></app-post-summary>
+    </div>
+  } @else {
+    @for (post of posts; track $index) {
+      <div class="col-12 md:col-6">
+        <app-post-summary [post]="post"></app-post-summary>
       </div>
-    } @else {
-      @for (post of posts; track $index) {
-        <div class="col-12 md:col-6">
-          <app-post-summary [post]="post"></app-post-summary>
-        </div>
-      }
     }
-  </div>
+  }
+</div>

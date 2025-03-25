@@ -3,6 +3,7 @@ import { TokenSlice } from '../models/models';
 import { Injectable } from '@angular/core';
 
 const INIT_STATE = {
+    userId: '',
     jwt: '',
     refreshToken: '',
     isAuthenticated: false
@@ -16,9 +17,10 @@ export class TokenStore extends Store<TokenSlice>{
         super(INIT_STATE);
     }
 
-    setToken(jwtGot: string, refreshTokenGot: string) {
+    setToken(uid: string, jwtGot: string, refreshTokenGot: string) {
         this.update(
             {   
+                userId: uid,
                 jwt: jwtGot,
                 refreshToken: refreshTokenGot,
                 isAuthenticated: true

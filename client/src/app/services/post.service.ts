@@ -16,6 +16,10 @@ export class PostService {
       .then(payload => this.postGot = payload);
   }
 
+  getAllPostsByUserId(userId: string) {
+    return lastValueFrom(this.httpClient.get<FinalPost[] | UpdateResult>(`/api/posts/${userId}`));
+  }
+
   updatePostById(postId: string, update: PostUpdate) {
     return lastValueFrom(this.httpClient.put<UpdateResult>(`/api/post/update/${postId}`, update));
   }

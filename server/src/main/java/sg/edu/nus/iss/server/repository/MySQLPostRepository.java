@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 import sg.edu.nus.iss.server.model.Post;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_POST_BY_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_ALL_POST_BY_USER_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POSTS_BY_PLACE_ID;
-import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POSTS_BY_USER_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_RECENT_POSTS_BY_USER_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_POST_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.INSERT_POST;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.UPDATE_POST_BY_ID;
@@ -35,17 +36,22 @@ public class MySQLPostRepository {
         
     }
 
-    public void getPostsByUserId(String user_id) throws DataAccessException {
+    // TODO complete this
+    public void getRecentPostsByUserId(String user_id) throws DataAccessException {
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
-        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_POSTS_BY_USER_ID, user_id, yesterday);
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_RECENT_POSTS_BY_USER_ID, user_id, yesterday);
         System.out.println(rs.next());
     }
 
-    public Optional<SqlRowSet> getPostsByPlaceId(String placeId) 
+    public SqlRowSet getAllPostsByUserId(String user_id) throws DataAccessException {
+        return jdbcTemplate.queryForRowSet(GET_ALL_POST_BY_USER_ID, user_id);
+    }
+
+    public SqlRowSet getPostsByPlaceId(String placeId) 
     throws DataAccessException {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_POSTS_BY_PLACE_ID, placeId);
-        return Optional.ofNullable(rs);
+        return rs;
     }
 
     public int createPost(Post p) throws DataAccessException {
