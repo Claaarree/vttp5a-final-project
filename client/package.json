@@ -22,6 +22,9 @@
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
     "@datorama/akita": "^7.1.1",
+    "@ngneat/effects-ng": "^3.1.4",
+    "@ngneat/elf": "^2.5.1",
+    "@ngneat/elf-cli-ng": "^1.0.0",
     "@primeng/themes": "^19.0.9",
     "firebase": "^11.4.0",
     "primeng": "^19.0.9",
@@ -41,5 +44,13 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+  },
+  "elf": {
+    "cli": {
+      "repoTemplate": "class",
+      "plugins": [
+        "@ngneat/elf-cli-ng"
+      ]
+    }
   }
 }

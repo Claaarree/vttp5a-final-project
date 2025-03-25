@@ -100,6 +100,8 @@ export class NewPostComponent implements OnInit{
       .then((result) => {
         console.log(result);
         this.router.navigate(['/viewpost', result.postId])
+      }).catch(err => {
+        console.log(err)
       })
   }
 

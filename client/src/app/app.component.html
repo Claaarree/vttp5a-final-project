@@ -7,14 +7,14 @@
 
  <div class="card">
     <p-menubar [model]="items">
-        <ng-template #start>
+        <ng-template #start [routerLink]="['/home']">
             <img src="/CiakWhere.svg" width="50px">
+            <p style="color: black;">ChiakWhere?<p>
         </ng-template>
         <ng-template #item let-item let-root="root">
             <a [routerLink]="item.route" pRipple class="flex items-center p-menubar-item-link">
                 <img [src]="item.icon" width="20px">
                 <span>{{ item.label }}</span>
-                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
             </a>
         </ng-template>
         <ng-template #end>

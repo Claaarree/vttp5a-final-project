@@ -1,15 +1,15 @@
 package sg.edu.nus.iss.server.model;
 
 public class NotificationMessage {
-    private String recipientToken;
+    private String recipient;
     private String title;
     private String body;
 
-    public String getRecipientToken() {
-        return recipientToken;
+    public String getRecipient() {
+        return recipient;
     }
-    public void setRecipientToken(String recipientToken) {
-        this.recipientToken = recipientToken;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
     public String getTitle() {
         return title;

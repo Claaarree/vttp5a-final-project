@@ -3,8 +3,14 @@ export interface User {
     password: string
 }
 
+export interface NewUser {
+    email: string
+    password: string
+    username: string
+}
+
 export interface LoginResponse {
-    userId: string
+    localId: string
     idToken: string
     refreshToken: string
 }

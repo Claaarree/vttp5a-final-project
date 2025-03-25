@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.server.repository;
 
+import static sg.edu.nus.iss.server.utils.MySqlQueries.CHECK_PLACE_EXIST;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DECREMENT_POST_COUNT;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_PLACE_BY_PLACE_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_PLACES;
@@ -41,7 +42,7 @@ public class MySQLPlaceRepository {
     }
 
     public Boolean placeExists(String placeId) {
-        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_PLACE_BY_PLACE_ID, placeId);
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(CHECK_PLACE_EXIST, placeId);
         return rs.next();
     }
 

@@ -98,6 +98,7 @@ public class PostController {
 
             return ResponseEntity.ok(jObject.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             JsonObject error = Json.createObjectBuilder()
                     .add("message", "Oops the post could not be created... Please try again later!")
@@ -141,5 +142,29 @@ public class PostController {
         }
         jObjectBuilder.add("message", "Hmm there seems to be an issue deleting... Please try again later!");
         return ResponseEntity.badRequest().body(jObjectBuilder.build().toString());
+    }
+
+    @PostMapping("/post/save") 
+    public ResponseEntity<String> savePost(@RequestBody String post) {
+        try {
+            postService.savePost(post);
+            return ResponseEntity.ok("{}");
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/post/unsave")
+    public ResponseEntity<String> unsavePost(@RequestBody String postId) {
+        try {
+            postService.unsavePost(postId);
+            return ResponseEntity.ok("{}");
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

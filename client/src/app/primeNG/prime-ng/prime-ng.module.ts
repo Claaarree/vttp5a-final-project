@@ -16,6 +16,8 @@ import { DialogModule } from 'primeng/dialog';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
+import { PasswordModule } from 'primeng/password';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { DividerModule } from 'primeng/divider';
     DialogModule,
     SelectButtonModule,
     SplitterModule,
-    DividerModule
+    DividerModule,
+    PasswordModule,
+    ScrollPanelModule
   ],
   exports: [
     CommonModule,
@@ -56,7 +60,9 @@ import { DividerModule } from 'primeng/divider';
     DialogModule,
     SelectButtonModule,
     SplitterModule,
-    DividerModule
+    DividerModule,
+    PasswordModule,
+    ScrollPanelModule
   ]
 })
 export class PrimeNGModule { }

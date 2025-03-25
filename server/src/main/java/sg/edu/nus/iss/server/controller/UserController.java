@@ -2,7 +2,6 @@ package sg.edu.nus.iss.server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import sg.edu.nus.iss.server.service.FirebaseAuthenticationService;
 import sg.edu.nus.iss.server.service.FirebaseAuthenticationService.FirebaseSignInResponse;
 import sg.edu.nus.iss.server.service.FirebaseAuthenticationService.RefreshTokenResponse;
@@ -19,7 +20,6 @@ import sg.edu.nus.iss.server.service.UserService;
 
 
 @RestController
-// @CrossOrigin("*")
 @RequestMapping("/api/user")
 public class UserController {
     
@@ -44,12 +44,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequest request) throws FirebaseAuthException {
+    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest request) throws FirebaseAuthException {
         System.out.println("in create user request");
-        userService.createUser(request.email(), request.password(), request.username());
-        return ResponseEntity.ok().build();
+        try {
+            userService.createUser(request.email(), request.password(), request.username());
+            return ResponseEntity.status(201).body("{}");
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            JsonObject error = Json.createObjectBuilder()
+                .add("message", e.getMessage())
+                .build();
+            return ResponseEntity.badRequest().body(error.toString());
+        }
     }
 
+    // TODO remove this
     @GetMapping("/login")
     public ResponseEntity<String> login() {
         return ResponseEntity.ok().body("get login");

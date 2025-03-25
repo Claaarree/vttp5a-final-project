@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { getToken, MessagePayload, onMessage, getMessaging } from 'firebase/messaging';
-import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom, Observable, Subject, switchMap, take } from 'rxjs';
+import { UserRepository } from '../state/user.repository';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,11 @@ export class FirebaseMessagingService {
   httpClient = inject(HttpClient);
   messaging = getMessaging();
   currentMessage = new Subject<MessagePayload>;
+  private jwt$!: Observable<string> 
+    
+  constructor(private userRepository: UserRepository) {
+    this.jwt$ = this.userRepository.jwt$
+  }
 
   getFCMToken() {
     getToken(this.messaging, {
@@ -18,8 +24,16 @@ export class FirebaseMessagingService {
         vapidKey: "BFctNhPhDKOi5_tCjBv5d1b-y5b5SgUqAbrOIF1tfADOmTRlhFEwTfQCNoy7_Kfdna89hqf_UrKVFnUPabwYaRM"
     }).then(payload => {
       console.log("in service:",payload);
-      lastValueFrom(this.httpClient.post<string>('/api/messaging/token', payload));
-      console.log("after http");
+      return lastValueFrom(this.jwt$.pipe(
+              take(1), // Get the latest token value once
+              switchMap(token => {
+              const headers = new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+              });
+              console.log(token, "in service")
+              return this.httpClient.post('/api/messaging/token', payload, {headers: headers});
+            })));
+      // console.log("after http");
       }
     );
   }

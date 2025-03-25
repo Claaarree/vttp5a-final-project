@@ -1,4 +1,5 @@
 
+@if (posts) {
 <div class="flex flex-column align-items-center">
     <p-card class="w-full">
         <ng-template #title>
@@ -13,16 +14,17 @@
     </p-card>
 
     <div class="grid mt-2 w-full">
-        @if (posts.length === 1) {
-            <div class="col-12 flex justify-content-center">
-                <app-post-summary [post]="posts[0]"></app-post-summary>
-            </div>
-        } @else {
-            @for (post of posts; track $index) {
-                <div class="col-12 md:col-6 flex justify-content-center">
-                    <app-post-summary [post]="post"></app-post-summary>
+            @if (posts.length === 1) {
+                <div class="col-12 flex justify-content-center">
+                    <app-post-summary [post]="posts[0]"></app-post-summary>
                 </div>
+            } @else {
+                @for (post of posts; track $index) {
+                    <div class="col-12 md:col-6 flex justify-content-center">
+                        <app-post-summary [post]="post"></app-post-summary>
+                    </div>
+                }
             }
-        }
+        </div>
     </div>
-</div>
+}

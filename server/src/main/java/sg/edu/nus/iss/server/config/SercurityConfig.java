@@ -12,7 +12,7 @@ import sg.edu.nus.iss.server.components.TokenAuthenticationFilter;
 
 @Configuration
 public class SercurityConfig {
-    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/user", "/api/user/login", "/api/user/refresh-token" };
+    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/user", "/api/user/login", "/api/user/refresh-token", "/api/messaging/token" };
 
     // private final TokenAuthenticationFilter tokenAuthenticationFilter;
 

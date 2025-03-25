@@ -1,8 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FirebaseMessagingService } from './services/firebase-messaging.service';
 import { MessagePayload } from 'firebase/messaging';
-import { Subject } from 'rxjs';
+import { combineLatest, filter, Observable, Subject, Subscription, tap } from 'rxjs';
 import { MenuItem } from 'primeng/api';
+import { UserService } from './services/user.service';
+import { UserRepository } from './state/user.repository';
 
 @Component({
   selector: 'app-root',
@@ -10,33 +12,58 @@ import { MenuItem } from 'primeng/api';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy{
+  
   title = 'final-project';
   messager = inject(FirebaseMessagingService);
+  userSvc = inject(UserService);
+  userRepo = inject(UserRepository);
   message$!: Subject<MessagePayload>;
   items: MenuItem[] | undefined;
-
+  currentUser$!: Observable<string>;
+  userId!: string;
+  isAuthenticated$!: Observable<boolean>;
+  isAuthenticated!: boolean;
+  authSubscription!: Subscription;
   
   ngOnInit(): void {
+      this.authSubscription = combineLatest([
+      this.userRepo.userId$,
+      this.userRepo.isAuthenticated$
+    ]).pipe(
+      filter(([userId, isAuthenticated]) => isAuthenticated && !!userId),
+      tap(([userId, isAuthenticated]) => {
+        this.userId = userId;
+        this.isAuthenticated = isAuthenticated;
+        this.loadItems();
+
+        this.requestPermission();
+        this.messager.listenForMessages();
+        this.message$ = this.messager.currentMessage;
+      })
+    ).subscribe();
+
     // this.registerServiceWorker();
-    this.requestPermission();
-    this.messager.listenForMessages();
-    this.message$ = this.messager.currentMessage;
+    
+
+  }
+
+  loadItems() {
     this.items = [
         {
           label: 'Home',
           icon: '/home-svgrepo-com.svg',
-          route: ['/viewplaces']
+          route: ['/home']
         },
         {
           label: 'Explore',
           icon: '/compass-svgrepo-com.svg',
-          route: ['/viewplaces']
+          route: '/viewplaces'
         },
         {
           label: 'Create',
           icon: '/plus-svgrepo-com.svg',
-          route: ['/newpost']
+          route: '/newpost'
         },
         {
             label: 'My Profile',
@@ -45,6 +72,7 @@ export class AppComponent implements OnInit{
                 {
                   label: 'My Posts',
                   icon: '/camera-svgrepo-com.svg',
+                  route: `user/${this.userId}`
                 },
                 {
                   label: 'Following',
@@ -54,10 +82,18 @@ export class AppComponent implements OnInit{
                   label: 'Saved Posts',
                   icon: '/bookmark-svgrepo-com.svg',                    
                 },
+                {
+                  label: 'Logout',
+                  icon: '/logout-svgrepo-com.svg',  
+                  command: () => {
+                    this.userSvc.logout();
+                    this.items = [];
+                  }                 
+                },
             ],
         },
     ];
-
+   
   }
 
   // unregisterServiceWorker(): void {
@@ -126,6 +162,10 @@ export class AppComponent implements OnInit{
         console.log('Permission denied or dismissed.');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
   }
 
 }

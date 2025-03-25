@@ -74,7 +74,7 @@ public class FirebaseAuthenticationService {
     public record FirebaseSignInRequest(String email, String password, boolean returnSecureToken) {
     }
 
-    public record FirebaseSignInResponse(String idToken, String refreshToken) {
+    public record FirebaseSignInResponse(String idToken, String refreshToken, String localId) {
     }
 
     public record RefreshTokenRequest(String grant_type, String refresh_token) {

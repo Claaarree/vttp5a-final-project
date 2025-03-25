@@ -1,4 +1,4 @@
-<p>login works!</p>
+
 
 <div class="flex justify-content-center">
     <p-card header="Login" [style]="{ width: '25rem', overflow: 'hidden' }">
@@ -11,13 +11,16 @@
             </div>
             <div class="field">
                 <p-floatlabel variant="on">
-                    <input pInputText class="w-full" id="password" formControlName="password" autocomplete="off" />
+                    <p-password inputId="password" [fluid]="true" [toggleMask]="true" class="w-full" id="password" formControlName="password" [feedback]="false" />
                     <label for="password">Password</label>
                 </p-floatlabel>
             </div>
             <div>
-                <p-button type="submit" label="Sign in" />
+                <p-button [disabled]="loginForm.invalid" type="submit" label="Sign in" />
             </div>
         </form>
+        <div>
+            <p id="signup" (click)="goToSignUp()">Don't have an account? Sign up here!</p>
+        </div>
     </p-card>
 </div>

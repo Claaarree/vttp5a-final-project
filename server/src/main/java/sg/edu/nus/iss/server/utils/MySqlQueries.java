@@ -29,6 +29,10 @@ public class MySqlQueries {
         join posts p ON pl.place_id = p.place_id
         where pl.place_id = ?
         """;
+    
+    public static final String CHECK_PLACE_EXIST = """
+        select * from places where place_id = ?
+        """;
 
     public static final String INCREMENT_POST_COUNT = """
         update places set 

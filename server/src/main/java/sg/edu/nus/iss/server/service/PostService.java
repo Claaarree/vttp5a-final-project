@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -19,6 +20,7 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import sg.edu.nus.iss.server.components.AuthenticatedUserIdProvider;
+import sg.edu.nus.iss.server.model.NotificationMessage;
 import sg.edu.nus.iss.server.model.Place;
 import sg.edu.nus.iss.server.model.Post;
 import sg.edu.nus.iss.server.repository.MongoPostRepository;
@@ -43,7 +45,10 @@ public class PostService {
     @Autowired
     private UserService userService;
 
-    // private String userId = authenticatedUserIdProvider.getUserId();
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+
+    
 
     public JsonObject getPostById(String postId) throws DataAccessException{
         Optional<SqlRowSet> opt = sqlPostRepository.getPostById(postId);
@@ -86,19 +91,18 @@ public class PostService {
         String post, String place, List<String> endpointUrls) 
         throws DataAccessException, FirebaseAuthException{
         // TODO change this back
-        // String dsplayName = userService.getDisplayName();
-        Post p = Post.jsonToPost(post, "test", "testing",  postId, endpointUrls);
+        String userId = authenticatedUserIdProvider.getUserId();
+        // String displayName = userService.getDisplayName();
+        Post p = Post.jsonToPost(post, userId, "testing",  postId, endpointUrls);
         Place pl = Place.jsonToPlace(place);
-
-        if(!sqlPlaceRepository.placeExists(pl.getPlaceId())){
+        Boolean placeExists = sqlPlaceRepository.placeExists(pl.getPlaceId());
+            
+        if(!placeExists){
             sqlPlaceRepository.createPlace(pl);
         } else {
             sqlPlaceRepository.incrementPostCount(pl.getPlaceId());
         }
         sqlPostRepository.createPost(p);
-
-        // TODO change this back!! don't need this anymore i think....
-        // mongoPostRepository.newPost(postId, "test");
     }
 
     public int updatePostById(String postId, String payload) throws DataAccessException{
@@ -113,13 +117,34 @@ public class PostService {
     public boolean deletePostById(String postId, String placeId) throws DataAccessException{
         int rowUpdated = sqlPostRepository.deletePostById(postId);
         int placeUpdated = sqlPlaceRepository.incrementPostCount(placeId);
-        // TODO remove post id from mongo
-        // long modifiedCount = mongoPostRepository.deletePostById(postId, "test");
 
         if(rowUpdated == 1 && placeUpdated == 1) {
             return true;
         }
         return false;
+    }
+
+    public void savePost(String post) throws FirebaseAuthException {
+        JsonObject jObject = Json.createReader(new StringReader(post)).readObject();
+        String postId = jObject.getString("postId");
+        // save to mongo
+        String userId = authenticatedUserIdProvider.getUserId();
+        this.mongoPostRepository.savePost(userId, postId);
+        
+        // send notification to recipient
+        String displayName = userService.getDisplayName();
+        NotificationMessage notif = new NotificationMessage();
+        notif.setTitle("You have received a like");
+        notif.setBody("%s has saved your post on %s".formatted(displayName, jObject.getString("name")));
+        notif.setRecipient(jObject.getString("userId"));
+        firebaseMessagingService.sendNotification(notif);
+        
+    }
+
+    public void unsavePost(String postId) {
+        // remove from mongo
+        String userId = authenticatedUserIdProvider.getUserId();
+        this.mongoPostRepository.unsavePost(userId, postId);
     }
 
     public static JsonObject rsToJson(SqlRowSet rs) {
@@ -143,4 +168,5 @@ public class PostService {
 
         return jObject;
     }
+
 }

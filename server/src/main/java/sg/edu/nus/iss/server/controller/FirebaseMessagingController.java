@@ -23,7 +23,7 @@ public class FirebaseMessagingController {
     private FirebaseMessagingService firebaseMessagingService;
     
     @PostMapping("/token")
-    public ResponseEntity<String> postMethodName(@RequestBody String token) {
+    public ResponseEntity<String> saveFCMToken(@RequestBody String token) {
         System.out.println("FCM token: " + token);
         JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
         try {

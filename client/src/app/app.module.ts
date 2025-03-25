@@ -25,6 +25,8 @@ import { PlaceProfileComponent } from './components/place-profile/place-profile.
 import { PlaceListComponent } from './components/place-list/place-list.component';
 import { PostSummaryComponent } from './components/post-summary/post-summary.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NewUserComponent } from './components/new-user/new-user.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     PlaceProfileComponent,
     PlaceListComponent,
     PostSummaryComponent,
-    UserProfileComponent   
+    UserProfileComponent,
+    NewUserComponent,
+    HomeComponent   
   ],
   imports: [
     BrowserModule,

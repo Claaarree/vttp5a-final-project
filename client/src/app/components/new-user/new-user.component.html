@@ -1,0 +1,29 @@
+
+<div class="flex justify-content-center">
+    <p-card header="Create new account" [style]="{ width: '25rem', overflow: 'hidden' }">
+        <form [formGroup]="form" (ngSubmit)="handleSubmit()">
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <input pInputText class="w-full" id="username" formControlName="username" autocomplete="off" />
+                    <label for="username">Username</label>
+                </p-floatlabel>
+            </div>
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <input pInputText class="w-full" id="email" formControlName="email" autocomplete="off" />
+                    <label for="email">Email</label>
+                </p-floatlabel>
+            </div>
+            <div class="field">
+                <p-floatlabel variant="on">
+                    <p-password inputId="password" [fluid]="true" [toggleMask]="true" class="w-full" id="password" formControlName="password" />
+                    <label for="password">Password</label>
+                </p-floatlabel>
+                <p>Password must be at least 6 characters!</p>
+            </div>
+            <div>
+                <p-button [disabled]="form.invalid" type="submit" label="Sign Up" />
+            </div>
+        </form>
+    </p-card>
+</div>
