@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit{
         const message = "Welcome! Start browsing for your next place to chiak!";
         this.messageService
           .add({ severity: 'info', summary: 'Signin Success', detail: message, key: "tc", life: 3000 });
-          this.router.navigate(['/viewplaces']);
+          this.router.navigate(['/home']);
         },
       error: (error) => {
         console.log(error);

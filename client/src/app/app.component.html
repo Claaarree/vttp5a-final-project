@@ -1,13 +1,11 @@
 <!-- <app-map></app-map> -->
 <!-- <app-login></app-login> -->
 <!-- <app-new-post></app-new-post> -->
- {{(message$ | async)?.notification?.title }}
- {{(message$ | async)?.notification?.body }}
  <p-toast key="tc" position="top-center"/>
 
  <div class="card">
     <p-menubar [model]="items">
-        <ng-template #start [routerLink]="['/home']">
+        <ng-template #start>
             <img src="/CiakWhere.svg" width="50px">
             <p style="color: black;">ChiakWhere?<p>
         </ng-template>
@@ -17,11 +15,14 @@
                 <span>{{ item.label }}</span>
             </a>
         </ng-template>
+
         <ng-template #end>
-            <div class="flex items-center gap-2">
-                <input type="text" pInputText placeholder="Search" class="w-36" />
-                <!-- <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" /> -->
-            </div>
+            @if (isAuthenticated) {
+                <div class="flex items-center gap-2">
+                    <input type="text" pInputText placeholder="Search" class="w-36" />
+                    <!-- <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" /> -->
+                </div>
+            }
         </ng-template>
     </p-menubar>
 </div>

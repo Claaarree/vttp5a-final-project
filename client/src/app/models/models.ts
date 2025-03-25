@@ -2,6 +2,10 @@ export interface User {
     email: string
     password: string
 }
+export interface Idol {
+    displayName: string
+    userId: string
+}
 
 export interface NewUser {
     email: string

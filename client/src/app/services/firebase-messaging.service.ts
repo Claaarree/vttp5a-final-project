@@ -3,6 +3,7 @@ import { getToken, MessagePayload, onMessage, getMessaging } from 'firebase/mess
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom, Observable, Subject, switchMap, take } from 'rxjs';
 import { UserRepository } from '../state/user.repository';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class FirebaseMessagingService {
 
   httpClient = inject(HttpClient);
   messaging = getMessaging();
+  messagingSvc = inject(MessageService);
   currentMessage = new Subject<MessagePayload>;
   private jwt$!: Observable<string> 
     
@@ -30,7 +32,6 @@ export class FirebaseMessagingService {
               const headers = new HttpHeaders({
                 'Authorization': `Bearer ${token}`
               });
-              console.log(token, "in service")
               return this.httpClient.post('/api/messaging/token', payload, {headers: headers});
             })));
       // console.log("after http");
@@ -42,7 +43,7 @@ export class FirebaseMessagingService {
   listenForMessages(): void {
     onMessage(this.messaging, (payload) => {
       console.log('Message received in foreground: ', payload);
-      // Display the notification to the user (you might use a service for this)
+      this.messagingSvc.add({ severity: 'info', summary: payload.notification?.title, detail: payload.notification?.body, key: "tc", life: 3000 })
       this.currentMessage.next(payload);
     });
   }

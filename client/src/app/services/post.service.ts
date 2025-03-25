@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { lastValueFrom, Observable, Subject, switchMap, take } from 'rxjs';
-import { FinalPost, PostUpdate, UpdateResult } from '../models/models';
+import { lastValueFrom, Observable, switchMap, take } from 'rxjs';
+import { FinalPost, Idol, PostUpdate, UpdateResult } from '../models/models';
 import { UserRepository } from '../state/user.repository';
 
 @Injectable({
@@ -31,15 +31,51 @@ export class PostService {
   }
 
   getAllPostsByUserId(userId: string) {
+    return this.jwt$.pipe(
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.get<FinalPost[] | UpdateResult>(`/api/posts/${userId}`, {headers: headers});
+    }));
+  }
+
+  getRecentPosts() {
     return lastValueFrom(this.jwt$.pipe(
-          take(1), // Get the latest token value once
-          switchMap(token => {
-          const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-          });
-          
-          return this.httpClient.get<FinalPost[] | UpdateResult>(`/api/posts/${userId}`, {headers: headers});
-        })));
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.get<FinalPost[] | UpdateResult>('/api/posts/recent', {headers: headers});
+    })));
+  }
+
+  getSavedPosts() {
+    return lastValueFrom(this.jwt$.pipe(
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.get<FinalPost[] | UpdateResult>('/api/posts/saved', {headers: headers});
+    })));
+  }
+
+  getFollowed() {
+    return lastValueFrom(this.jwt$.pipe(
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.get<Idol[] | UpdateResult>('/api/users/followed', {headers: headers});
+    })));
   }
 
   updatePostById(postId: string, update: PostUpdate) {
@@ -89,6 +125,30 @@ export class PostService {
       });
       
       return this.httpClient.post<UpdateResult>('/api/post/unsave', postId, {headers: headers});
+    })));
+  }
+
+  followUser(recipient: string) {
+    return lastValueFrom(this.jwt$.pipe(
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.post<UpdateResult>('/api/user/follow', recipient, {headers: headers});
+    })));
+  }
+
+  unfollowUser(recipient: string) {
+    return lastValueFrom(this.jwt$.pipe(
+      take(1), // Get the latest token value once
+      switchMap(token => {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      
+      return this.httpClient.post<UpdateResult>('/api/user/unfollow', recipient, {headers: headers});
     })));
   }
 }

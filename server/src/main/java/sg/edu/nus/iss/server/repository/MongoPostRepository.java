@@ -25,7 +25,7 @@ public class MongoPostRepository {
     public void savePost(String uid, String postId) {
         Query query = Query.query(Criteria.where(F__ID).is(uid));
         Update updateOps = new Update()
-                .push(F_SAVED_POSTS, postId);
+                .addToSet(F_SAVED_POSTS, postId);
 
         mongoTemplate.upsert(query, updateOps, C_INFORMATION);
     }
@@ -40,7 +40,7 @@ public class MongoPostRepository {
     public void follow(String uid, String recipient) {
         Query query = Query.query(Criteria.where(F__ID).is(uid));
         Update updateOps = new Update()
-                .push(F_FOLLOWED, recipient);
+                .addToSet(F_FOLLOWED, recipient);
 
         mongoTemplate.upsert(query, updateOps, C_INFORMATION);
     }

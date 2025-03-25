@@ -1,25 +1,29 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FinalPost } from '../../models/models';
-import { PostService } from '../../services/post.service';
 import { MessageService } from 'primeng/api';
+import { FinalPost, Idol } from '../../models/models';
+import { PostService } from '../../services/post.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-followed',
   standalone: false,
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './followed.component.html',
+  styleUrl: './followed.component.css'
 })
-export class HomeComponent implements OnInit{
-  
+export class FollowedComponent implements OnInit{
+
   private postSvc = inject(PostService);
   private messageService = inject(MessageService);
-  posts!: FinalPost[];
-  
+  private router = inject(Router);
+  names!: Idol[];
+  visible = true;
+      
   ngOnInit(): void {
-    this.postSvc.getRecentPosts().then(
+    this.postSvc.getFollowed().then(
       (payload) => {
+        console.log(payload)
         if(Array.isArray(payload)){
-          this.posts = payload;
+          this.names = payload;
         } else{
           this.messageService
           .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });
@@ -32,4 +36,10 @@ export class HomeComponent implements OnInit{
       }
     )
   }
+
+  goToProfile(idx : number) {
+    const uid = this.names[idx].userId;
+    this.router.navigate([`/user/${uid}`]);
+  }
+
 }

@@ -77,7 +77,74 @@ public class PostController {
         }
     }
 
-    // TODO
+    @GetMapping("/posts/recent")
+    public ResponseEntity<String> getRecentFollowedPosts() {
+        try {
+            JsonArray jArray = postService.getRecentPosts();
+            if(jArray.isEmpty()) {
+                JsonObject empty = Json.createObjectBuilder()
+                    .add("message", "You are not following anyone... Go explore to begin!")
+                    .build();
+                return ResponseEntity.ok().body(empty.toString());
+            } else {
+                return ResponseEntity.ok(jArray.toString());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops an error occurred... Please try again later!")
+                    .build();
+            
+            return ResponseEntity.badRequest().body(error.toString());
+        }
+    }
+
+    @GetMapping("/posts/saved")
+    public ResponseEntity<String> getSavedPosts() {
+        try {
+            JsonArray jArray = postService.getSaved();
+            if(jArray.isEmpty()) {
+                JsonObject empty = Json.createObjectBuilder()
+                    .add("message", "You have no saved posts... Go explore to begin!")
+                    .build();
+                return ResponseEntity.ok().body(empty.toString());
+            } else {
+                return ResponseEntity.ok(jArray.toString());
+            }
+        } catch (Exception e) {            
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops an error occurred... Please try again later!")
+                    .build();
+            
+            return ResponseEntity.badRequest().body(error.toString());
+        }
+    }
+
+    @GetMapping("/users/followed")
+    public ResponseEntity<String> getFollowed() {
+        try {
+            JsonArray jArray = postService.getFollowed();
+            if(jArray.isEmpty()) {
+                JsonObject empty = Json.createObjectBuilder()
+                    .add("message", "You are not following anyone... Go explore to begin!")
+                    .build();
+                return ResponseEntity.ok().body(empty.toString());
+            } else {
+                return ResponseEntity.ok(jArray.toString());
+            }
+        } catch (Exception e) {            
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("message", "Oops an error occurred... Please try again later!")
+                    .build();
+            
+            return ResponseEntity.badRequest().body(error.toString());
+        }
+    }
+
+
     @PostMapping(path = "/post/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createPost(@RequestPart String post, @RequestPart String place,
     @RequestParam(name = "data") MultipartFile... file) throws IOException {
@@ -149,8 +216,7 @@ public class PostController {
         try {
             postService.savePost(post);
             return ResponseEntity.ok("{}");
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (Exception e) {            
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -161,8 +227,29 @@ public class PostController {
         try {
             postService.unsavePost(postId);
             return ResponseEntity.ok("{}");
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (Exception e) {            
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/user/follow")
+    public ResponseEntity<String> followUser(@RequestBody String recipient) {
+        try {
+            postService.followUser(recipient);
+            return ResponseEntity.ok("{}");
+        } catch (Exception e) {            
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/user/unfollow")
+    public ResponseEntity<String> unfollowUser(@RequestBody String recipient) {
+        try {
+            postService.unfollowUser(recipient);
+            return ResponseEntity.ok("{}");
+        } catch (Exception e) {            
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }

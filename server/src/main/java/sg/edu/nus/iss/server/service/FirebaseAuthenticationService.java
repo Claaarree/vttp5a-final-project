@@ -82,6 +82,5 @@ public class FirebaseAuthenticationService {
 
     public record RefreshTokenResponse(String id_token) {
     }
-    // to force user to reauthenticate
-    // firebaseAuth.revokeRefreshTokens(userId);
+    
 }

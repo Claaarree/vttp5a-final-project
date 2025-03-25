@@ -24,11 +24,10 @@ export class NewPostComponent implements OnInit{
   filelist!: FileList;
   fileError!: string;
   placeError!: string;
-  // try to get from component store...
-  // areas!: string[];
   areas: string[] = ["Central", "East", "West", "North", "NorthEast"];
   selectedArea!: string;
   selectedPlace! : Place;
+  isSubmitted = false;
 
   async ngOnInit(): Promise<void> {
     this.form = this.createForm();
@@ -99,6 +98,7 @@ export class NewPostComponent implements OnInit{
     this.fileUploadSvc.upload(this.post, this.selectedPlace, this.filelist)
       .then((result) => {
         console.log(result);
+        this.isSubmitted = true;
         this.router.navigate(['/viewpost', result.postId])
       }).catch(err => {
         console.log(err)

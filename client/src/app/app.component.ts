@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy{
         {
           label: 'Home',
           icon: '/home-svgrepo-com.svg',
-          route: ['/home']
+          route: '/home'
         },
         {
           label: 'Explore',
@@ -76,11 +76,13 @@ export class AppComponent implements OnInit, OnDestroy{
                 },
                 {
                   label: 'Following',
-                  icon: '/heart-svgrepo-com.svg',                    
+                  icon: '/heart-svgrepo-com.svg', 
+                  route: '/followed'                   
                 },              
                 {
                   label: 'Saved Posts',
-                  icon: '/bookmark-svgrepo-com.svg',                    
+                  icon: '/bookmark-svgrepo-com.svg',  
+                  route: '/saved'                  
                 },
                 {
                   label: 'Logout',

@@ -31,7 +31,7 @@ export class ViewPostComponent implements OnInit{
   currentUser$!: Observable<string>;
   
   ngOnInit() {
-    this.currentUser$ = this.userRepo.userId$
+    this.currentUser$ = this.userRepo.userId$;
     if(this.showPost) {
       this.loadImages(this.showPost);
       this.checkOwnership();

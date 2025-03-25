@@ -32,7 +32,8 @@ public class UserService {
     @Autowired
     private AuthenticatedUserIdProvider authenticatedUserIdProvider;
     
-    public void createUser(String email, String password, String username) throws FirebaseAuthException {
+    public void createUser(String email, String password, String username) 
+    throws FirebaseAuthException, MessagingException {
         CreateRequest request = new CreateRequest();
         request.setEmail(email);
         request.setPassword(password);
@@ -40,17 +41,17 @@ public class UserService {
         // TODO maybe implement email verification?
         request.setEmailVerified(Boolean.FALSE);
         
-        try {
-            firebaseAuth.createUser(request);
-            sendVerificationEmail(email);
-        } catch (FirebaseException e) {
-            if (e.getMessage().contains("EMAIL_EXISTS")) {
-                System.out.println("Account already exists!");
-            }
-        } catch (MessagingException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+        firebaseAuth.createUser(request);
+        sendVerificationEmail(email);
+        // try {
+        // } catch (FirebaseException e) {
+        //     if (e.getMessage().contains("EMAIL_EXISTS")) {
+        //         System.out.println("Account already exists!");
+        //     }
+        // } catch (MessagingException e) {
+        //             // TODO Auto-generated catch block
+        //             e.printStackTrace();
+        // }
     }
 
     public void sendVerificationEmail(String email) throws FirebaseAuthException, MessagingException {

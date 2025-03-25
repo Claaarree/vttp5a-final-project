@@ -101,4 +101,10 @@ public class MySqlQueries {
             p.place_id = pl.place_id
 		where p.place_id = ?
         """;
+
+    public static final String GET_FOLLOWED = """
+        select display_name, user_id from posts
+            where user_id = ?
+            limit 1    
+        """;
 }

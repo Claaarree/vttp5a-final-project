@@ -6,10 +6,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import sg.edu.nus.iss.server.model.Post;
 
 import static sg.edu.nus.iss.server.utils.MySqlQueries.DELETE_POST_BY_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_ALL_POST_BY_USER_ID;
+import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_FOLLOWED;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POSTS_BY_PLACE_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_RECENT_POSTS_BY_USER_ID;
 import static sg.edu.nus.iss.server.utils.MySqlQueries.GET_POST_BY_POST_ID;
@@ -36,12 +39,12 @@ public class MySQLPostRepository {
         
     }
 
-    // TODO complete this
-    public void getRecentPostsByUserId(String user_id) throws DataAccessException {
+    public SqlRowSet getRecentPostsByUserId(String user_id) throws DataAccessException {
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
         SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_RECENT_POSTS_BY_USER_ID, user_id, yesterday);
-        System.out.println(rs.next());
+
+        return rs;
     }
 
     public SqlRowSet getAllPostsByUserId(String user_id) throws DataAccessException {
@@ -73,5 +76,17 @@ public class MySQLPostRepository {
 
     public int deletePostById(String postId) throws DataAccessException{
         return jdbcTemplate.update(DELETE_POST_BY_ID, postId);
+    }
+
+    public JsonObject getDisplayName(String recipient) {
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(GET_FOLLOWED, recipient);
+        if(rs.next()){
+            return Json.createObjectBuilder()
+            .add("displayName", rs.getString("display_name"))
+            .add("userId", rs.getString("user_id"))
+            .build();
+        }else {
+            return JsonObject.EMPTY_JSON_OBJECT;
+        }
     }
 }

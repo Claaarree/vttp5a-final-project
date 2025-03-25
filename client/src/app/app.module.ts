@@ -27,6 +27,8 @@ import { PostSummaryComponent } from './components/post-summary/post-summary.com
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { HomeComponent } from './components/home/home.component';
+import { SavedPostsComponent } from './components/saved-posts/saved-posts.component';
+import { FollowedComponent } from './components/followed/followed.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { HomeComponent } from './components/home/home.component';
     PostSummaryComponent,
     UserProfileComponent,
     NewUserComponent,
-    HomeComponent   
+    HomeComponent,
+    SavedPostsComponent,
+    FollowedComponent   
   ],
   imports: [
     BrowserModule,

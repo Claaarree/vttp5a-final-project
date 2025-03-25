@@ -56,7 +56,7 @@ public class PostService {
         JsonObject jsonObject = null;
         if(opt.isEmpty()){
             jsonObject = Json.createObjectBuilder()
-                .add("error", "unable to retrieve post")
+                .add("error", "Unable to retrieve post")
                 .build();
         } else {
             jsonObject = rsToJson(opt.get());
@@ -84,6 +84,54 @@ public class PostService {
         }
 
         return jArrayBuilder.build();
+    }
+
+    public JsonArray getRecentPosts() {
+        String userId = authenticatedUserIdProvider.getUserId();
+        List<String> followed = mongoPostRepository.getFollowed(userId);
+        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
+        if(followed != null){
+            for(String s: followed) {
+                SqlRowSet rs = sqlPostRepository.getRecentPostsByUserId(s);
+                while(rs.next()) {
+                    JsonObject jObject = rsToJson(rs);
+                    jArrayBuilder.add(jObject);
+                }
+            } 
+        }
+        return jArrayBuilder.build();
+    }
+
+    public JsonArray getSaved() {
+        String userId = authenticatedUserIdProvider.getUserId();
+        List<String> saved = mongoPostRepository.getSaved(userId);
+        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
+        if(saved != null){
+            for(String s: saved) {               
+                Optional<SqlRowSet> opt = sqlPostRepository.getPostById(s);
+                if(opt.isPresent()){
+                    SqlRowSet rs = opt.get();               
+                    JsonObject jObject = rsToJson(rs);
+                    jArrayBuilder.add(jObject);
+                }
+            } 
+        }
+        return jArrayBuilder.build();
+    }
+
+    public JsonArray getFollowed() {
+        String userId = authenticatedUserIdProvider.getUserId();
+        List<String> followed = mongoPostRepository.getFollowed(userId);
+        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
+        if(followed != null){
+            for(String s: followed) {
+                JsonObject name = sqlPostRepository.getDisplayName(s);
+                System.out.println(name);
+                jArrayBuilder.add(name);
+            } 
+        }
+        return jArrayBuilder.build();
+
     }
 
     @Transactional
@@ -135,7 +183,7 @@ public class PostService {
         String displayName = userService.getDisplayName();
         NotificationMessage notif = new NotificationMessage();
         notif.setTitle("You have received a like");
-        notif.setBody("%s has saved your post on %s".formatted(displayName, jObject.getString("name")));
+        notif.setBody("@%s has saved your post on %s".formatted(displayName, jObject.getString("name")));
         notif.setRecipient(jObject.getString("userId"));
         firebaseMessagingService.sendNotification(notif);
         
@@ -145,6 +193,23 @@ public class PostService {
         // remove from mongo
         String userId = authenticatedUserIdProvider.getUserId();
         this.mongoPostRepository.unsavePost(userId, postId);
+    }
+
+    public void followUser(String recipient) throws FirebaseAuthException {
+        String userId = authenticatedUserIdProvider.getUserId();
+        mongoPostRepository.follow(userId, recipient);
+
+        String displayName = userService.getDisplayName();
+        NotificationMessage notif = new NotificationMessage();
+        notif.setTitle("You have a new follow!");
+        notif.setBody("@%s has started following you!".formatted(displayName));
+        notif.setRecipient(recipient);
+        firebaseMessagingService.sendNotification(notif);
+    }
+
+    public void unfollowUser(String recipient) {
+        String userId = authenticatedUserIdProvider.getUserId();
+        mongoPostRepository.unfollow(userId, recipient);
     }
 
     public static JsonObject rsToJson(SqlRowSet rs) {

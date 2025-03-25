@@ -5,7 +5,13 @@
         <ng-template #title>
             <div class="flex align-items-center justify-content-between w-full">
                 <p class="m-0 mr-2">&#64;{{posts[0].displayName}}</p>
-                <p-button>Follow</p-button>
+                @if (!isOwner) {
+                    @if (!following) {
+                        <p-button (onClick)="follow()">Follow</p-button>
+                    } @else {
+                        <p-button (onClick)="unfollow()" severity="secondary">Unfollow</p-button>
+                    }
+                }
             </div>
         </ng-template>
         <p class="m-0">
