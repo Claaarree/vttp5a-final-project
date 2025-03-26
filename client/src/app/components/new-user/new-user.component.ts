@@ -49,9 +49,9 @@ export class NewUserComponent implements OnInit{
     ).catch(
       (err) => {
         // TODO think about this
-        const message = "There seemed to be an error... Please try again!";
+        const message = "There is already an account with this email! Please try again!";
         this.messagingSvc.add(
-          { severity: 'error', summary: 'Signup Failure', detail: err.message, key: "tr", life: 3000 }
+          { severity: 'error', summary: 'Signup Failure', detail: message, key: "tr", life: 3000 }
         )
       }
     );

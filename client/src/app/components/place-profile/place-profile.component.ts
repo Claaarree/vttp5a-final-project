@@ -39,7 +39,7 @@ export class PlaceProfileComponent implements OnInit{
     this.placeSvc.getPlaceByPlaceId(this.placeId).then(
       (place) => {
         this.place = place;
-        this.mapUrl = `https://www.onemap.gov.sg/api/staticmap/getStaticImage?layerchosen=default&zoom=17&height=350&width=500&lat=${place.lat}&lng=${place.lng}&points=%5B${place.lat}%2C%20${place.lng}%5D`;
+        this.mapUrl = `https://www.onemap.gov.sg/api/staticmap/getStaticImage?layerchosen=default&zoom=17&height=250&width=512&lat=${place.lat}&lng=${place.lng}&points=%5B${place.lat}%2C%20${place.lng}%5D`;
       }
     )
 
