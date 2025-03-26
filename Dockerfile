@@ -38,6 +38,9 @@ FROM eclipse-temurin:23-jre
 
 WORKDIR /app
 
+# Ensure the static directory exists before copying
+RUN mkdir -p src/main/resources/static
+
 COPY --from=buildjava /src/target/server-0.0.1-SNAPSHOT.jar ChiakWhere.jar
 COPY server/sound-vault-452513-u3-firebase-adminsdk-fbsvc-6681b74e16.json .
 
