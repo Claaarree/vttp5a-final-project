@@ -84,10 +84,10 @@ public class PostService {
 
     public JsonArray getRecentPosts() {
         String userId = authenticatedUserIdProvider.getUserId();
-        List<String> followed = mongoPostRepository.getFollowed(userId);
+        Optional<List<String>> followed = mongoPostRepository.getFollowed(userId);
         JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
-        if(followed != null){
-            for(String s: followed) {
+        if(followed.isPresent()){
+            for(String s: followed.get()) {
                 SqlRowSet rs = sqlPostRepository.getRecentPostsByUserId(s);
                 while(rs.next()) {
                     JsonObject jObject = rsToJson(rs);
@@ -117,10 +117,10 @@ public class PostService {
 
     public JsonArray getFollowed() {
         String userId = authenticatedUserIdProvider.getUserId();
-        List<String> followed = mongoPostRepository.getFollowed(userId);
+        Optional<List<String>> followed = mongoPostRepository.getFollowed(userId);
         JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
-        if(followed != null){
-            for(String s: followed) {
+        if(followed.isPresent()){
+            for(String s: followed.get()) {
                 JsonObject name = sqlPostRepository.getDisplayName(s);
                 System.out.println(name);
                 jArrayBuilder.add(name);

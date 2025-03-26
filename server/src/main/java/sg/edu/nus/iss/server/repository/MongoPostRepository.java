@@ -15,6 +15,7 @@ import static sg.edu.nus.iss.server.utils.MongoDbConstants.F_SAVED_POSTS;
 import static sg.edu.nus.iss.server.utils.MongoDbConstants.F__ID;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MongoPostRepository {
@@ -60,10 +61,11 @@ public class MongoPostRepository {
         mongoTemplate.upsert(query, updateOps, C_INFORMATION);
     }
 
-    public List<String> getFollowed(String uid) {
+    public Optional<List<String>> getFollowed(String uid) {
         Query query = Query.query(Criteria.where(F__ID).is(uid));
         Document d = mongoTemplate.findOne(query, Document.class, C_INFORMATION);
-        return d.getList(F_FOLLOWED, String.class);
+        // TODO fix this
+        return Optional.ofNullable(d.getList(F_FOLLOWED, String.class));
     }
 
     public List<String> getSaved(String uid) {
