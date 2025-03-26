@@ -24,8 +24,10 @@ COPY server/src src
 COPY server/.mvn .mvn
 # COPY server/sound-vault-452513-u3-firebase-adminsdk-fbsvc-6681b74e16.json .
 
+# RUN mkdir -p src/main/resources/static
+
 # copy the angular app over to static directory
-COPY --from=buildang /src/dist/final-project/browser/* src/main/resources/static
+COPY --from=buildang /src/dist/final-project/browser/ src/main/resources/static
 
 # make mvnw executable
 RUN chmod a+x mvnw
@@ -37,9 +39,6 @@ RUN ./mvnw package -Dmaven.test.skip=true
 FROM eclipse-temurin:23-jre
 
 WORKDIR /app
-
-# Ensure the static directory exists before copying
-RUN mkdir -p src/main/resources/static
 
 COPY --from=buildjava /src/target/server-0.0.1-SNAPSHOT.jar ChiakWhere.jar
 COPY server/sound-vault-452513-u3-firebase-adminsdk-fbsvc-6681b74e16.json .
