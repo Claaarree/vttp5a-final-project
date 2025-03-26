@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploadService } from '../../services/file-upload.service';
 import { Image, Place, Post } from '../../models/models';
 import { Router } from '@angular/router';
-import { PostService } from '../../services/post.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-post',
@@ -17,7 +17,7 @@ export class NewPostComponent implements OnInit{
   private fb = inject(FormBuilder);
   private fileUploadSvc = inject(FileUploadService);
   private router = inject(Router);
-  private postService = inject(PostService);
+  private messageService = inject(MessageService);
   form!: FormGroup;
   images: Image[] = [];
   post!: Post;
@@ -99,9 +99,14 @@ export class NewPostComponent implements OnInit{
       .then((result) => {
         console.log(result);
         this.isSubmitted = true;
+        const message = "The post has successfully been posted!"
+        this.messageService
+        .add({ severity: 'success', summary: 'Success', detail: message, key: "tr", life: 3000 });
         this.router.navigate(['/viewpost', result.postId])
       }).catch(err => {
-        console.log(err)
+        console.log(err);
+        this.messageService
+          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tr", life: 3000 });
       })
   }
 
