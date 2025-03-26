@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { NewUser } from '../../models/models';
 import { lastValueFrom } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-user',
@@ -16,6 +17,7 @@ export class NewUserComponent implements OnInit{
   private fb = inject(FormBuilder);
   private userSvc = inject(UserService);
   private messagingSvc = inject(MessageService);
+  private router = inject(Router);
   form!: FormGroup;
   new!: NewUser;
   
@@ -40,6 +42,7 @@ export class NewUserComponent implements OnInit{
         this.messagingSvc.add(
           { severity: 'info', summary: 'Signup Success', detail: message, key: "tc", life: 3000 }
         )
+        this.router.navigate(['']);
       }
     ).catch(
       (err) => {
@@ -50,6 +53,10 @@ export class NewUserComponent implements OnInit{
         )
       }
     );
+  }
+
+  goBack() {
+    this.router.navigate(['']);
   }
   
 }

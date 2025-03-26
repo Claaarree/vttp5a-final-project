@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { FinalPost, Idol } from '../../models/models';
 import { PostService } from '../../services/post.service';
 import { Router } from '@angular/router';
+import { SavedNFollowsRepository } from '../../state/saved-nfollows.repository';
 
 @Component({
   selector: 'app-followed',
@@ -15,6 +16,7 @@ export class FollowedComponent implements OnInit{
   private postSvc = inject(PostService);
   private messageService = inject(MessageService);
   private router = inject(Router);
+  private followRepo = inject(SavedNFollowsRepository);
   names!: Idol[];
   visible = true;
       
@@ -24,6 +26,11 @@ export class FollowedComponent implements OnInit{
         console.log(payload)
         if(Array.isArray(payload)){
           this.names = payload;
+          const ids: string[] = [];
+          payload.forEach(i => {
+            ids.push(i.userId);
+          })
+          this.followRepo.loadFollowed(ids);
         } else{
           this.messageService
           .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });

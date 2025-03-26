@@ -30,7 +30,7 @@
     </div>
   } @else {
     @for (post of posts; track $index) {
-      <div class="col-12 md:col-6">
+      <div class="col-12 md:col-6 flex justify-content-center">
         <app-post-summary [post]="post"></app-post-summary>
       </div>
     }

@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { FinalPost, FinalPlace } from '../../models/models';
 import { catchError, combineLatest, EMPTY, Observable, Subscription, switchMap, take, tap } from 'rxjs';
 import { UserRepository } from '../../state/user.repository';
+import { SavedNFollowsRepository } from '../../state/saved-nfollows.repository';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,11 +19,12 @@ export class UserProfileComponent implements OnInit, OnDestroy{
   private activatedRoute = inject(ActivatedRoute);
   private messageService = inject(MessageService);
   private userRepo = inject(UserRepository);
+  private followRepo = inject(SavedNFollowsRepository);
   userId!: string;
   posts!: FinalPost[];
   mapUrl!: string;
   postSub$!: Subscription;
-  following: boolean = false;
+  following$!: Observable<boolean>;
   isOwner : boolean = true;
   currentUser$!: Observable<string>;
   
@@ -40,6 +42,8 @@ export class UserProfileComponent implements OnInit, OnDestroy{
       tap(([payload, currentUserId]) => {
         if(Array.isArray(payload)){
           this.posts = payload;
+          this.following$ = this.followRepo.isFollowing(this.userId);
+
         } else {
           this.messageService
             .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });
@@ -68,10 +72,23 @@ export class UserProfileComponent implements OnInit, OnDestroy{
           }
         })
       ).subscribe();
-    }
+  }
+
+  toggleFollow() {
+    this.followRepo.toggleFollow(this.userId);
+    this.following$.pipe(
+      take(1),
+      tap(val => {
+        if(val) {
+          this.follow();
+        }else {
+          this.unfollow();
+        }
+      })
+    ).subscribe();
+  }
 
   follow() {
-    this.following = true;
     this.postSvc.followUser(this.userId).then(
       (response) => {
         const message = "You are now following them!"
@@ -87,7 +104,6 @@ export class UserProfileComponent implements OnInit, OnDestroy{
   }
 
   unfollow() {
-    this.following = false;
     this.postSvc.unfollowUser(this.userId).then(
       (response) => {
         const message = "You are now not following them!"

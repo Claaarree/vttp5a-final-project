@@ -14,11 +14,11 @@
             <div style="display: flex; align-items: center;">
                 <span style="flex-grow: 1;" class="place" (click)="goToLocation()">{{showPost.name}} </span>
                 <!-- bookmark -->
-                 @if (isSaved) {
-                    <img style="cursor: pointer; width: 25px;" (click)="unsave()" src="/bookmark-svgrepo-com.svg">
+                 @if (isSaved$ | async) {
+                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/bookmark-svgrepo-com.svg">
                  }
                  @else {
-                    <img style="cursor: pointer; width: 25px;" (click)="save()" src="/bookmark-plus-svgrepo-com.svg">
+                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/bookmark-plus-svgrepo-com.svg">
                  }
             </div>
         </ng-template>

@@ -1,6 +1,6 @@
 
 <p-drawer [(visible)]="visible" header="Following">
     @for (name of names; let idx = $index; track idx) {
-        <p style="cursor: pointer;" (click)="goToProfile(idx)">{{name.displayName}}</p>
+        <p style="cursor: pointer;" (click)="goToProfile(idx)">&#64;{{name.displayName}}</p>
     }
 </p-drawer>

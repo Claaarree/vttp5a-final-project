@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { UserRepository } from '../../state/user.repository';
 import { Observable, take, tap } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { SavedNFollowsRepository } from '../../state/saved-nfollows.repository';
 
 @Component({
   selector: 'app-view-post',
@@ -20,13 +21,12 @@ export class ViewPostComponent implements OnInit{
   router = inject(Router);
   location = inject(Location);
   userRepo = inject(UserRepository);
+  savedRepo = inject(SavedNFollowsRepository);
   messageSvc = inject(MessageService);
  
-
-  postId = this.activatedRoute.snapshot.params['postId'];
   protected images: Image[] = [];
   @Input()showPost!: FinalPost;
-  isSaved: boolean = false;
+  isSaved$!: Observable<boolean>;
   isOwner: boolean = false;
   currentUser$!: Observable<string>;
   
@@ -35,13 +35,21 @@ export class ViewPostComponent implements OnInit{
     if(this.showPost) {
       this.loadImages(this.showPost);
       this.checkOwnership();
+      this.isSaved$ = this.savedRepo.isPostLiked(this.showPost.postId).pipe(
+        tap(val => console.log(val))
+      );
     } else {
-      this.postService.getPostById(this.postId)
+      console.log("in else")
+      const postId = this.activatedRoute.snapshot.params['postId'];
+      this.postService.getPostById(postId)
         .then(result => {
           console.log(result);
           this.showPost = result;
           this.loadImages(result);
           this.checkOwnership();
+          this.isSaved$ = this.savedRepo.isPostLiked(this.showPost.postId).pipe(
+            tap(val => console.log(val))
+          );
         }
       ).catch(
         err => {
@@ -84,15 +92,28 @@ export class ViewPostComponent implements OnInit{
   }
 
   editPost() {
-    this.router.navigate(['/editpost', this.postId]);
+    this.router.navigate(['/editpost', this.showPost.postId]);
   }
 
   goBack() {
     this.location.back();
   }
 
+  toggleLike() {
+    this.savedRepo.toggleLike(this.showPost.postId);
+    this.isSaved$.pipe(
+      take(1),
+      tap(val => {
+        if(val) {
+          this.save();
+        }else {
+          this.unsave();
+        }
+      })
+    ).subscribe();
+  }
+  
   save() {
-    this.isSaved = true;
     this.postService.savePost(this.showPost).then(
       (response) => {
         const message = "The post has been saved!"
@@ -108,8 +129,7 @@ export class ViewPostComponent implements OnInit{
   }
 
   unsave() {
-    this.isSaved = false;
-    this.postService.unsavePost(this.postId).then(
+    this.postService.unsavePost(this.showPost.postId).then(
       (response) => {
         const message = "The post has been removed from saved posts!"
         this.messageSvc

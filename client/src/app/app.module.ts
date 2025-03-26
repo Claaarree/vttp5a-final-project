@@ -19,8 +19,6 @@ import { MessageService } from 'primeng/api';
 import { MyPreset } from './primeNG/mytheme';
 import { ViewPostComponent } from './components/view-post/view-post.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
-import { TokenQuery } from './state/token.query';
-import { TokenStore } from './state/token.store';
 import { PlaceProfileComponent } from './components/place-profile/place-profile.component';
 import { PlaceListComponent } from './components/place-list/place-list.component';
 import { PostSummaryComponent } from './components/post-summary/post-summary.component';
@@ -66,8 +64,7 @@ import { FollowedComponent } from './components/followed/followed.component';
         },
         ripple:true 
     }),
-    MessageService,
-    TokenQuery, TokenStore
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

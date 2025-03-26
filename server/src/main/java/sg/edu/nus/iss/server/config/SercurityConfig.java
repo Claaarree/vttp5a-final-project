@@ -12,7 +12,7 @@ import sg.edu.nus.iss.server.components.TokenAuthenticationFilter;
 
 @Configuration
 public class SercurityConfig {
-    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/user", "/api/user/login", "/api/user/refresh-token", "/api/messaging/token" };
+    private static final String[] WHITELISTED_API_ENDPOINTS = { "/api/user", "/api/user/login", "/api/user/refresh-token" };
 
     // private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
@@ -29,14 +29,14 @@ public class SercurityConfig {
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(authManager -> {
                 authManager
-                // .requestMatchers(HttpMethod.POST, WHITELISTED_API_ENDPOINTS)
-                //     .permitAll()
-                // .requestMatchers(HttpMethod.GET, "/","/user/login", "/error")
-                //     .permitAll()
+                .requestMatchers(HttpMethod.POST, WHITELISTED_API_ENDPOINTS)
+                    .permitAll()
+                .requestMatchers(HttpMethod.GET, "/","/user/login", "/error")
+                    .permitAll()
                 // TODO change back the permissions!!
                 .anyRequest()
-                    .permitAll();
-                    // .authenticated();
+                    // .permitAll();
+                    .authenticated();
             })
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
             // .oauth2Login(Customizer.withDefaults());

@@ -6,10 +6,10 @@
             <div class="flex align-items-center justify-content-between w-full">
                 <p class="m-0 mr-2">&#64;{{posts[0].displayName}}</p>
                 @if (!isOwner) {
-                    @if (!following) {
-                        <p-button (onClick)="follow()">Follow</p-button>
+                    @if (following$ | async ) {
+                        <p-button (onClick)="toggleFollow()" severity="secondary">Unfollow</p-button>
                     } @else {
-                        <p-button (onClick)="unfollow()" severity="secondary">Unfollow</p-button>
+                        <p-button (onClick)="toggleFollow()">Follow</p-button>
                     }
                 }
             </div>

@@ -140,8 +140,8 @@ public class PostService {
         throws DataAccessException, FirebaseAuthException{
         // TODO change this back
         String userId = authenticatedUserIdProvider.getUserId();
-        // String displayName = userService.getDisplayName();
-        Post p = Post.jsonToPost(post, userId, "testing",  postId, endpointUrls);
+        String displayName = userService.getDisplayName();
+        Post p = Post.jsonToPost(post, userId, displayName,  postId, endpointUrls);
         Place pl = Place.jsonToPlace(place);
         Boolean placeExists = sqlPlaceRepository.placeExists(pl.getPlaceId());
             
