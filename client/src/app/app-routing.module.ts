@@ -40,8 +40,8 @@ export const hasSaved: CanDeactivateFn<NewPostComponent> =
 }
 
 export const newUser: CanDeactivateFn<NewUserComponent> = 
-(createPost: NewUserComponent, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  if(createPost.form.dirty){
+(newUser: NewUserComponent, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  if(newUser.form.dirty && !newUser.isSubmitted){
     return confirm('You have not created an account yet!\nAre you sure you want to leave?');
   }
   return true;

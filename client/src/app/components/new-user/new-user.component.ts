@@ -20,6 +20,7 @@ export class NewUserComponent implements OnInit{
   private router = inject(Router);
   form!: FormGroup;
   new!: NewUser;
+  isSubmitted = false;
   
   ngOnInit(): void {
     this.form = this.createForm();
@@ -34,6 +35,7 @@ export class NewUserComponent implements OnInit{
   }
 
   handleSubmit() {
+    this.isSubmitted = true;
     console.log(this.form.value);
     this.new = this.form.value;
     lastValueFrom(this.userSvc.createUser(this.new)).then(
