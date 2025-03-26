@@ -29,6 +29,15 @@ public class SercurityConfig {
             .csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests(authManager -> {
                 authManager
+                .requestMatchers("/svg/**", 
+                        "/icons/**", 
+                        "/*.js", 
+                        "/png/**",
+                        "/*.ico",
+                        "/index.html",
+                        "/manifest.json",
+                        "/*.css")
+                    .permitAll()
                 .requestMatchers(HttpMethod.POST, WHITELISTED_API_ENDPOINTS)
                     .permitAll()
                 .requestMatchers(HttpMethod.GET, "/","/user/login", "/error")

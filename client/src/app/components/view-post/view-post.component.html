@@ -15,10 +15,10 @@
                 <span style="flex-grow: 1;" class="place" (click)="goToLocation()">{{showPost.name}} </span>
                 <!-- bookmark -->
                  @if (isSaved$ | async) {
-                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/bookmark-svgrepo-com.svg">
+                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/svg/bookmark-svgrepo-com.svg">
                  }
                  @else {
-                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/bookmark-plus-svgrepo-com.svg">
+                    <img style="cursor: pointer; width: 25px;" (click)="toggleLike()" src="/svg/bookmark-plus-svgrepo-com.svg">
                  }
             </div>
         </ng-template>
@@ -33,13 +33,13 @@
             <div class="flex gap-4 mt-1 justify-content-between align-items-center">
                 <p-button (onClick)="goBack()" severity="secondary" [outlined]="true" label="Back">
                     <ng-template pTemplate="icon">
-                        <img width="20px" src="/back-svgrepo-com.svg">
+                        <img width="20px" src="/svg/back-svgrepo-com.svg">
                     </ng-template>
                 </p-button>
                 <p class="m-0">{{showPost.postDate | date: 'MMMM d, yyyy' }}</p>
                 @if (isOwner) {
                     <div style="display: flex; justify-content: flex-end;">
-                        <img style="cursor: pointer; width: 20px; margin-left: 8px;" (click)="editPost()" src="/edit-icon.svg">
+                        <img style="cursor: pointer; width: 20px; margin-left: 8px;" (click)="editPost()" src="/svg/edit-icon.svg">
                     </div>
                 }
             </div>

@@ -52,41 +52,41 @@ export class AppComponent implements OnInit, OnDestroy{
     this.items = [
         {
           label: 'Home',
-          icon: '/home-svgrepo-com.svg',
+          icon: '/svg/home-svgrepo-com.svg',
           route: '/home'
         },
         {
           label: 'Explore',
-          icon: '/compass-svgrepo-com.svg',
+          icon: '/svg/compass-svgrepo-com.svg',
           route: '/viewplaces'
         },
         {
           label: 'Create',
-          icon: '/plus-svgrepo-com.svg',
+          icon: '/svg/plus-svgrepo-com.svg',
           route: '/newpost'
         },
         {
             label: 'My Profile',
-            icon: '/profile-round-1342-svgrepo-com.svg',
+            icon: '/svg/profile-round-1342-svgrepo-com.svg',
             items: [
                 {
                   label: 'My Posts',
-                  icon: '/camera-svgrepo-com.svg',
+                  icon: '/svg/camera-svgrepo-com.svg',
                   route: `user/${this.userId}`
                 },
                 {
                   label: 'Following',
-                  icon: '/heart-svgrepo-com.svg', 
+                  icon: '/svg/heart-svgrepo-com.svg', 
                   route: '/followed'                   
                 },              
                 {
                   label: 'Saved Posts',
-                  icon: '/bookmark-svgrepo-com.svg',  
+                  icon: '/svg/bookmark-svgrepo-com.svg',  
                   route: '/saved'                  
                 },
                 {
                   label: 'Logout',
-                  icon: '/logout-svgrepo-com.svg',  
+                  icon: '/svg/logout-svgrepo-com.svg',  
                   command: () => {
                     this.userSvc.logout();
                     this.items = [];

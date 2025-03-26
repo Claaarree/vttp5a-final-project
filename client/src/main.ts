@@ -2,7 +2,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { initializeApp } from 'firebase/app';
 import { getMessaging } from 'firebase/messaging';
-import { environment } from '../src/environments/environment';
 
 platformBrowserDynamic().bootstrapModule(AppModule, {
   ngZoneEventCoalescing: true,
