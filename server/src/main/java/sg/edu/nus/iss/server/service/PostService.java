@@ -4,7 +4,6 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -12,13 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.messaging.FirebaseMessagingException;
-
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import sg.edu.nus.iss.server.components.AuthenticatedUserIdProvider;
 import sg.edu.nus.iss.server.model.NotificationMessage;
 import sg.edu.nus.iss.server.model.Place;

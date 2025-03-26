@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
-import sg.edu.nus.iss.server.model.NotificationMessage;
 import sg.edu.nus.iss.server.service.FirebaseMessagingService;
 
 import org.springframework.web.bind.annotation.PostMapping;

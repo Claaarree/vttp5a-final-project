@@ -7,7 +7,6 @@ import { MapComponent } from './components/map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { provideHttpClient } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
-import { MaterialModule } from './material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewPostComponent } from './components/new-post/new-post.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -50,7 +49,6 @@ import { FollowedComponent } from './components/followed/followed.component';
     BrowserModule,
     AppRoutingModule,
     GoogleMapsModule,
-    MaterialModule,
     ReactiveFormsModule,
     PrimeNGModule,
     FormsModule

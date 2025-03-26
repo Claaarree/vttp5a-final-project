@@ -13,16 +13,12 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import sg.edu.nus.iss.server.model.Place;
 import sg.edu.nus.iss.server.repository.MySQLPlaceRepository;
-import sg.edu.nus.iss.server.repository.MySQLPostRepository;
 
 @Service
 public class PlaceService {
     
     @Autowired
     private MySQLPlaceRepository placeRepository;
-
-    @Autowired
-    private MySQLPostRepository postRepository;
 
     public JsonArray getTopPlaces(int offset) throws DataAccessException {
         SqlRowSet rs = placeRepository.getTopPlaces(offset);
