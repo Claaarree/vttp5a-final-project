@@ -43,7 +43,7 @@ export class FirebaseMessagingService {
   listenForMessages(): void {
     onMessage(this.messaging, (payload) => {
       console.log('Message received in foreground: ', payload);
-      this.messagingSvc.add({ severity: 'info', summary: payload.notification?.title, detail: payload.notification?.body, key: "tr", life: 3000 })
+      this.messagingSvc.add({ severity: 'info', summary: payload.notification?.title, detail: payload.notification?.body, key: "tc", life: 3000 })
       this.currentMessage.next(payload);
     });
   }
