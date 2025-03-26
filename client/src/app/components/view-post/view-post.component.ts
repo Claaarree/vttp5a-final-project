@@ -54,7 +54,7 @@ export class ViewPostComponent implements OnInit{
       ).catch(
         err => {
           this.messageSvc
-        .add({ severity: 'error', summary: 'Hmm..', detail: err, key: "tc", life: 3000 });
+        .add({ severity: 'error', summary: 'Hmm..', detail: err, key: "tr", life: 3000 });
         }
       );
     }
@@ -118,12 +118,12 @@ export class ViewPostComponent implements OnInit{
       (response) => {
         const message = "The post has been saved!"
         this.messageSvc
-        .add({ severity: 'success', summary: 'Success', detail: message, key: "tc", life: 3000 });
+        .add({ severity: 'success', summary: 'Success', detail: message, key: "tr", life: 3000 });
       }
     ).catch(
       err => {
         this.messageSvc
-          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tr", life: 3000 });
       }
     );
   }
@@ -133,12 +133,12 @@ export class ViewPostComponent implements OnInit{
       (response) => {
         const message = "The post has been removed from saved posts!"
         this.messageSvc
-        .add({ severity: 'success', summary: 'Success', detail: message, key: "tc", life: 3000 });
+        .add({ severity: 'success', summary: 'Success', detail: message, key: "tr", life: 3000 });
       }
     ).catch(
       err => {
         this.messageSvc
-          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tr", life: 3000 });
       }
     );;
   }

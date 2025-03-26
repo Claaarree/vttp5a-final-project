@@ -42,7 +42,7 @@ export class NewUserComponent implements OnInit{
       () => {
         const message = "Please verify your email address before signing in! It may be in your spam."
         this.messagingSvc.add(
-          { severity: 'info', summary: 'Signup Success', detail: message, key: "tc", life: 3000 }
+          { severity: 'info', summary: 'Signup Success', detail: message, key: "tr", life: 3000 }
         )
         this.router.navigate(['']);
       }
@@ -51,7 +51,7 @@ export class NewUserComponent implements OnInit{
         // TODO think about this
         const message = "There seemed to be an error... Please try again!";
         this.messagingSvc.add(
-          { severity: 'error', summary: 'Signup Failure', detail: err.message, key: "tc", life: 3000 }
+          { severity: 'error', summary: 'Signup Failure', detail: err.message, key: "tr", life: 3000 }
         )
       }
     );

@@ -67,13 +67,13 @@ export class EditPostComponent implements OnInit{
     .then((result) => {
       console.log(result);
       this.messageService
-        .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tc", life: 3000 });
+        .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tr", life: 3000 });
       this.router.navigate([`/user/${this.postGot.userId}`])
     })
     .catch((error) => {
       console.log(error);
       this.messageService
-        .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tc", life: 3000 });
+        .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tr", life: 3000 });
       this.router.navigate([`/user/${this.postGot.userId}`])
     })
   }
@@ -89,13 +89,13 @@ export class EditPostComponent implements OnInit{
       .then((result) => {
         console.log(result);
         this.messageService
-          .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tc", life: 3000 });
+          .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tr", life: 3000 });
         this.router.navigate(['/viewpost', this.postId])
       })
       .catch((error) => {
         console.log(error);
         this.messageService
-          .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tr", life: 3000 });
         this.router.navigate(['/viewpost', this.postId])
       })
   }

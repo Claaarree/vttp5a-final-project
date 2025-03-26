@@ -22,13 +22,13 @@ export class HomeComponent implements OnInit{
           this.posts = payload;
         } else{
           this.messageService
-          .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });
+          .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tr", life: 3000 });
         }
       }
     ).catch(
       err => {
         this.messageService
-          .add({ severity: 'error', summary: 'Oops...', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Oops...', detail: err.message, key: "tr", life: 3000 });
       }
     )
   }

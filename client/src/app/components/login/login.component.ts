@@ -37,14 +37,14 @@ export class LoginComponent implements OnInit{
         console.log(data);
         const message = "Welcome! Start browsing for your next place to chiak!";
         this.messageService
-          .add({ severity: 'info', summary: 'Signin Success', detail: message, key: "tc", life: 3000 });
+          .add({ severity: 'info', summary: 'Signin Success', detail: message, key: "tr", life: 3000 });
           this.router.navigate(['/home']);
         },
       error: (error) => {
         console.log(error);
         const message = "Email and/or password may be wrong... Please try again!";
         this.messageService
-          .add({ severity: 'info', summary: 'Signin failure', detail: message, key: "tc", life: 3000 });
+          .add({ severity: 'info', summary: 'Signin failure', detail: message, key: "tr", life: 3000 });
       }
     })
   }

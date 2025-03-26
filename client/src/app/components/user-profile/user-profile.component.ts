@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit, OnDestroy{
 
         } else {
           this.messageService
-            .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tc", life: 3000 });
+            .add({ severity: 'info', summary: 'No Posts', detail: payload.message, key: "tr", life: 3000 });
         }
     
         this.isOwner = this.userId === currentUserId;
@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit, OnDestroy{
       }),
       catchError((err) => {
         this.messageService
-          .add({ severity: 'error', summary: 'Oops...', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Oops...', detail: err.message, key: "tr", life: 3000 });
         return EMPTY;
       })
     ).subscribe();
@@ -93,12 +93,12 @@ export class UserProfileComponent implements OnInit, OnDestroy{
       (response) => {
         const message = "You are now following them!"
         this.messageService
-        .add({ severity: 'success', summary: 'Success', detail: message, key: "tc", life: 3000 });
+        .add({ severity: 'success', summary: 'Success', detail: message, key: "tr", life: 3000 });
       }
     ).catch(
       err => {
         this.messageService
-          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tr", life: 3000 });
       }
     );
   }
@@ -108,12 +108,12 @@ export class UserProfileComponent implements OnInit, OnDestroy{
       (response) => {
         const message = "You are now not following them!"
         this.messageService
-        .add({ severity: 'success', summary: 'Success', detail: message, key: "tc", life: 3000 });
+        .add({ severity: 'success', summary: 'Success', detail: message, key: "tr", life: 3000 });
       }
     ).catch(
       err => {
         this.messageService
-          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tc", life: 3000 });
+          .add({ severity: 'error', summary: 'Failed', detail: err.message, key: "tr", life: 3000 });
       }
     );
   }
