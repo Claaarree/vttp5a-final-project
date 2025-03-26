@@ -100,7 +100,7 @@ export class PostService {
           
           const queryParams: HttpParams = new HttpParams()
               .set("placeId", placeId);
-          return this.httpClient.delete(`/api/post/delete/${postId}`, {params: queryParams, headers:headers})
+          return this.httpClient.delete<UpdateResult>(`/api/post/delete/${postId}`, {params: queryParams, headers:headers})
         })));
   }
 

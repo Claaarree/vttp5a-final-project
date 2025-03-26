@@ -63,7 +63,19 @@ export class EditPostComponent implements OnInit{
 
   deletePost() {
     // TODO implement delete post route back to profile with all posts
-    this.postService.deletePostById(this.postId, this.postGot.placeId);
+    this.postService.deletePostById(this.postId, this.postGot.placeId)
+    .then((result) => {
+      console.log(result);
+      this.messageService
+        .add({ severity: 'success', summary: 'Success', detail: result.message, key: "tc", life: 3000 });
+      this.router.navigate([`/user/${this.postGot.userId}`])
+    })
+    .catch((error) => {
+      console.log(error);
+      this.messageService
+        .add({ severity: 'error', summary: 'Error', detail: error.message, key: "tc", life: 3000 });
+      this.router.navigate([`/user/${this.postGot.userId}`])
+    })
   }
 
   goBack() {
